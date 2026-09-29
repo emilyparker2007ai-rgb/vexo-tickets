@@ -1,0 +1,46 @@
+[
+  {
+    "role": "hero",
+    "file": "hero.mp4",
+    "poster": "hero.jpg",
+    "title": "Vibrant Celebration of Football Fans at Night",
+    "source_url": "https://www.pexels.com/video/vibrant-celebration-of-football-fans-at-night-38641440/",
+    "author": "Monirul Islam (https://www.pexels.com/@monirulislam/)",
+    "license": "Pexels License (uso gratuito, incluso comercial, sin atribucion obligatoria)",
+    "license_url": "https://www.pexels.com/license/",
+    "edit": "tramo 0-3.9 s del original, ralentizado 1.6x (6.2 s), sin audio"
+  },
+  {
+    "role": "bol",
+    "file": "bol.mp4",
+    "poster": "bol.jpg",
+    "title": "Vibrant Night Football Match at a Stadium",
+    "source_url": "https://www.pexels.com/video/vibrant-night-football-match-at-a-stadium-35053395/",
+    "author": "Necip Duman (https://www.pexels.com/@necip-duman-3299706/)",
+    "license": "Pexels License (uso gratuito, incluso comercial, sin atribucion obligatoria)",
+    "license_url": "https://www.pexels.com/license/",
+    "edit": "tramo 0.2-7.2 s (antes del corte de camara en 7.3 s), sin audio"
+  },
+  {
+    "role": "bfa",
+    "file": "bfa.mp4",
+    "poster": "bfa.jpg",
+    "title": "Aerial view of a soccer stadium at night",
+    "source_url": "https://www.pexels.com/video/aerial-view-of-a-soccer-stadium-at-night-27561584/",
+    "author": "Bien Agusto (https://www.pexels.com/@bien-agusto-719713845/)",
+    "license": "Pexels License (uso gratuito, incluso comercial, sin atribucion obligatoria)",
+    "license_url": "https://www.pexels.com/license/",
+    "edit": "clip completo (7 s), sin audio"
+  },
+  {
+    "role": "ben",
+    "file": "ben.mp4",
+    "poster": "ben.jpg",
+    "title": "Vibrant Celebration of Argentina's Football Victory",
+    "source_url": "https://www.pexels.com/video/vibrant-celebration-of-argentina-s-football-victory-38641442/",
+    "author": "Monirul Islam (https://www.pexels.com/@monirulislam/)",
+    "license": "Pexels License (uso gratuito, incluso comercial, sin atribucion obligatoria)",
+    "license_url": "https://www.pexels.com/license/",
+    "edit": "tramo 1.5-9.5 s, sin audio"
+  }
+]

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#070a12">
+<meta name="description" content="Elegí el partido y tu lugar en el estadio con precio final. Te confirmamos por WhatsApp y te damos la entrada original.">
+<meta name="format-detection" content="telephone=no">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_AR">
+<meta property="og:site_name" content="Vexo Tickets">
+<meta property="og:title" content="Vexo Tickets · Entradas para la Selección Argentina">
+<meta property="og:description" content="Elegí el partido y tu lugar en el estadio con precio final. Te confirmamos por WhatsApp y te damos la entrada original.">
+<meta property="og:image" content="og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+
+<meta name="twitter:card" content="summary_large_image">
+<style>:root{padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Vexo Tickets · Entradas para la Selección Argentina</title>
+<style>html{background:#070a12;color-scheme:dark}</style>
+<link rel="preload" as="image" href="media/hero-m.jpg" media="(max-aspect-ratio: 4/5)" fetchpriority="high">
+<link rel="preload" as="image" href="media/hero.jpg" media="(min-aspect-ratio: 4.01/5)">
+<link rel="modulepreload" href="js/app.js">
+<link rel="modulepreload" href="js/data.js">
+<link rel="modulepreload" href="js/ui.js">
+<link rel="modulepreload" href="js/geometry.js">
+<link rel="modulepreload" href="js/map.js">
+<link rel="modulepreload" href="js/cart.js">
+<link rel="modulepreload" href="js/checkout.js">
+<link rel="modulepreload" href="js/logo.js">
+<link rel="modulepreload" href="js/icons.js">
+<link rel="modulepreload" href="js/clients.js">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Saira+Condensed:wght@700;800&display=swap">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/match.css">
+<link rel="stylesheet" href="css/checkout.css">
+
+
+</head>
+<body>
+<header class="top" id="top">
+  <div class="wrap top__in">
+    <a class="brand" href="#inicio" data-go="home" aria-label="Vexo, inicio" id="brand"></a>
+    <nav class="top__nav" aria-label="Principal">
+      <a class="btn btn--ghost" href="#clientes" data-scroll="clientes">Referencias</a>
+      <a class="btn btn--wa" data-wa href="https://wa.me/" target="_blank" rel="noopener" aria-label="Contactanos por WhatsApp"><span class="btn__label">Contactanos</span></a>
+      <button class="cartbtn" id="cart-btn" type="button" aria-label="Abrir el carrito">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l2.1 10.2a1.5 1.5 0 0 0 1.5 1.2h8.7a1.5 1.5 0 0 0 1.5-1.1L21 8H6.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9.5" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/></svg>
+        <span class="cartbtn__n" id="cart-n">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<main id="inicio">
+  <div id="view-home">
+    <section class="intro" id="intro" aria-label="Presentación">
+      <div id="intro-bg"></div>
+      <div class="intro__center" id="intro-center">
+        <h1 class="intro__logo" id="intro-logo"></h1>
+        <p class="intro__tag">Entradas para la Selección Argentina</p>
+        <ul class="intro__fixture" aria-label="Próximos partidos">
+          <li><a href="#bol" data-match="bol"><span>30.09</span> Bolivia</a></li>
+          <li><a href="#bfa" data-match="bfa"><span>03.10</span> Burkina Faso</a></li>
+          <li><a href="#ben" data-match="ben"><span>06.10</span> Benín</a></li>
+        </ul>
+      </div>
+      <a class="intro__cue" href="#partidos" data-scroll="partidos"><span>Ver partidos</span><i aria-hidden="true"></i></a>
+    </section>
+
+    <section class="cases" id="casos" aria-labelledby="cases-title">
+      <div class="wrap cases__head">
+        <h2 class="sec-title" id="cases-title">Del Monumental a la final del Mundial</h2>
+        <p class="sec-lead">Selección, Copa Argentina y Mundial 2026. Estos son algunos de los hinchas que ya recibieron su entrada con Vexo.</p>
+      </div>
+      <div class="cases__viewport" id="cases" tabindex="0" role="region" aria-label="Casos de clientes. Deslizá para ver más."></div>
+      <div class="wrap cases__foot">
+        <div class="cases__nav">
+          <button class="cases__btn" type="button" data-cases="-1" aria-label="Ver casos anteriores">←</button>
+          <button class="cases__btn" type="button" data-cases="1" aria-label="Ver más casos">→</button>
+        </div>
+        <a class="cases__more" href="#clientes" data-scroll="clientes">Ver todas las referencias</a>
+      </div>
+    </section>
+
+    <section class="wrap fixtures" id="partidos" aria-labelledby="fx-title">
+      <div class="sec-head">
+        <h2 class="sec-title" id="fx-title">¿A qué partido vamos?</h2>
+        <p class="sec-lead">Elegí el partido. Después te mostramos el estadio con cada ubicación y su precio final.</p>
+      </div>
+      <ol class="fixtures__list" id="cards"></ol>
+    </section>
+
+    <section class="trust" aria-labelledby="trust-title">
+      <div class="wrap trust__grid">
+        <div class="trust__lead">
+          <h2 class="sec-title" id="trust-title">Comprar una entrada no tendría que dar miedo</h2>
+          <p class="sec-lead">Por eso trabajamos a la vista.</p>
+          <dl class="trust__list">
+            <div><dt>Te atiende una persona</dt><dd>Nos escribís por WhatsApp y te contestamos nosotros, de principio a fin.</dd></div>
+            <div><dt>Pagás cuando confirmamos</dt><dd>Primero te confirmamos el lugar exacto. Recién ahí pagás, nunca antes.</dd></div>
+            <div><dt>Entrada original</dt><dd>Te damos la entrada oficial en mano, o te la transferimos a tu cuenta cuando es digital.</dd></div>
+          </dl>
+          <div class="trust__actions">
+            <a class="btn btn--sol btn--lg" href="#clientes" data-scroll="clientes">Ver clientes que ya fueron</a>
+            <a class="btn btn--wa btn--lg" data-wa href="https://wa.me/" target="_blank" rel="noopener"><span>Escribinos</span></a>
+          </div>
+        </div>
+        <figure class="trust__photo">
+          <img src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" data-src="img/cliente-084.jpg" alt="Hincha sonriendo en la vereda con sus dos entradas recién entregadas" width="750" height="1000" loading="lazy">
+          <figcaption>Entrega en mano · Copa Argentina, julio 2026</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="clients-sec" id="clientes" aria-labelledby="clients-title">
+      <div class="wrap">
+        <div class="sec-head">
+          <h2 class="sec-title" id="clients-title">Hinchas que ya fueron con nosotros</h2>
+          <p class="sec-lead">Fotos reales de entregas, publicadas con permiso de cada hincha.</p>
+        </div>
+        <div class="clients" id="clients-grid"></div>
+        <div class="sold">
+          <h3 class="sold__title">Partidos donde ya entregamos</h3>
+          <ul class="sold__list" id="sold"></ul>
+        </div>
+        <div class="clients__social">
+          <a class="btn btn--ghost" id="ig" href="#clientes" target="_blank" rel="noopener">Instagram · muy pronto</a>
+          <a class="btn btn--wa" data-wa href="https://wa.me/" target="_blank" rel="noopener"><span>Contactanos</span></a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="view-match" hidden></div>
+  <div id="view-reserva" hidden></div>
+</main>
+
+<footer class="wrap foot">
+  <span class="foot__logo" id="foot-logo"></span>
+  <p class="foot__note">Prototipo. Horarios verificados en afa.com.ar. Precios de Vexo al 28/09/2026. Videos de Pexels: Monirul Islam, Necip Duman y Bien Agusto.</p>
+  <button class="btn btn--ghost btn--sm" id="sim" type="button" aria-pressed="false">Simular 1/10 (Bolivia ya se jugó)</button>
+</footer>
+
+<aside class="cart" id="cart" hidden>
+  <div class="cart__panel" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+    <button class="sheet__grab cart__grab" type="button" data-cart-close aria-label="Cerrar el carrito"></button>
+    <div class="cart__head">
+      <h2 class="cart__title" id="cart-title">Tu carrito</h2>
+      <button class="cart__close" type="button" data-cart-close>Cerrar</button>
+    </div>
+    <div class="cart__body"></div>
+  </div>
+</aside>
+
+<div class="tip" id="tip" role="tooltip" hidden></div>
+<div class="sheet" id="sheet" hidden></div>
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+/* "Tu reserva": the ticket is the hero, the summary sends you to WhatsApp */
+.co { padding-block: 20px 72px; }
+.co__back { min-height: 44px; margin-bottom: 4px; padding: 8px 0; border: 0; background: none; color: var(--texto-2); font: 600 14px/1 var(--f-body); cursor: pointer; }
+@media (hover: hover) { .co__back:hover { color: var(--texto); } }
+.co__grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(320px, 1fr); gap: 24px; align-items: start; }
+
+.ticket {
+  --cut: 64%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 36%);
+  background: var(--texto);
+  color: var(--noche);
+  -webkit-mask:
+    radial-gradient(circle at var(--cut) 0, transparent 14px, #000 15px) top / 100% 51% no-repeat,
+    radial-gradient(circle at var(--cut) 100%, transparent 14px, #000 15px) bottom / 100% 51% no-repeat;
+  mask:
+    radial-gradient(circle at var(--cut) 0, transparent 14px, #000 15px) top / 100% 51% no-repeat,
+    radial-gradient(circle at var(--cut) 100%, transparent 14px, #000 15px) bottom / 100% 51% no-repeat;
+  animation: ticket-in 0.6s var(--ease) backwards;
+}
+@keyframes ticket-in { from { opacity: 0; transform: translateY(16px); } }
+.ticket__main { padding: clamp(20px, 3vw, 40px); }
+.ticket__flags { display: flex; align-items: center; gap: 10px; color: rgba(7, 10, 18, 0.6); font-size: 14px; font-weight: 600; }
+.ticket__flags .flag { height: 30px; box-shadow: 0 0 0 1px rgba(7, 10, 18, 0.15); }
+.ticket { border-top: 6px solid transparent; border-image: linear-gradient(90deg, #74acdf 0 16.66%, #fff 0 33.33%, #74acdf 0 50%, var(--ra) 0 66.66%, var(--rb) 0 83.33%, var(--rc) 0) 1; }
+.ticket__title { display: grid; margin: 12px 0 28px; font: 800 clamp(48px, 6.4vw, 100px)/0.84 var(--f-display); text-transform: uppercase; }
+.ticket__vs { margin-block: 8px; font-size: 0.3em; letter-spacing: 0.12em; color: #2f6496; }
+.ticket__facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px; margin: 0; }
+.ticket__facts div { display: grid; align-content: start; gap: 4px; }
+.ticket__facts dt { font: 500 12px/1.2 var(--f-mono); letter-spacing: 0.08em; text-transform: uppercase; color: rgba(7, 10, 18, 0.66); }
+.ticket__facts dd { margin: 0; font-size: 16px; font-weight: 600; }
+.ticket__stub { display: grid; align-content: space-between; gap: 16px; padding: 24px; background: #dfe7f1; border-left: 2px dashed rgba(7, 10, 18, 0.22); }
+.ticket__map { padding: 10px; background: var(--noche); }
+.ticket__map .plano { display: block; width: 100%; height: auto; }
+.ticket__qty { display: flex; align-items: baseline; gap: 8px; margin: 0; }
+.ticket__qty b { font: 800 64px/0.9 var(--f-display); font-variant-numeric: tabular-nums; }
+.ticket__qty span { color: rgba(7, 10, 18, 0.66); font-weight: 600; }
+.ticket__code { margin: 0; color: rgba(7, 10, 18, 0.62); word-break: break-all; }
+
+.co__sum {
+  position: sticky;
+  top: 84px;
+  display: grid;
+  gap: 14px;
+  padding: clamp(20px, 2.5vw, 28px);
+  background: var(--noche-2);
+  border: 1px solid var(--linea-2);
+}
+.co__hello { margin: 0; font: 700 22px/1.2 var(--f-body); }
+.co__sum .btn--wa { justify-content: center; }
+.co__line { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--texto-2); }
+.co__line b { color: var(--texto); font-variant-numeric: tabular-nums; }
+.co__total { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-top: 14px; border-top: 1px solid var(--linea); }
+.co__total span { color: var(--texto-2); }
+.co__total b { font: 800 clamp(38px, 4vw, 54px)/1 var(--f-display); font-variant-numeric: tabular-nums; }
+.co__steps { display: grid; gap: 10px; margin: 4px 0 6px; padding: 0; list-style: none; counter-reset: paso; }
+.co__steps li { display: grid; grid-template-columns: 28px 1fr; gap: 10px; color: var(--texto-2); font-size: 14px; counter-increment: paso; }
+.co__steps li::before {
+  content: counter(paso);
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--linea-2);
+  color: var(--texto);
+  font: 600 12px/26px var(--f-mono);
+  text-align: center;
+}
+.co__steps b { color: var(--texto); }
+.co__msg summary { padding: 12px 0; color: var(--texto-2); font-size: 14px; cursor: pointer; }
+.co__msg pre { margin: 10px 0; padding: 14px; white-space: pre-wrap; background: var(--noche); border: 1px solid var(--linea); font: 13px/1.5 var(--f-mono); }
+
+
+@media (max-width: 900px) {
+  .co__grid { grid-template-columns: minmax(0, 1fr); }
+  .co__sum { position: static; }
+}
+@media (max-width: 600px) {
+  .ticket { grid-template-columns: none; -webkit-mask: none; mask: none; }
+  .ticket__stub { grid-template-columns: 1fr; border-left: 0; border-top: 2px dashed rgba(7, 10, 18, 0.22); }
+  .ticket__facts { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---- phones: price and main action under the thumb ---- */
+.co-bar { display: none; }
+@media (max-width: 720px) {
+  .co { padding-bottom: 110px; }
+  .co-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px max(var(--gutter), env(safe-area-inset-right, 0px)) calc(12px + env(safe-area-inset-bottom, 0px)) max(var(--gutter), env(safe-area-inset-left, 0px)); background: rgba(11, 16, 27, 0.97); border-top: 1px solid var(--linea-2); transform: translateY(110%); transition: transform 0.3s var(--ease); }
+  .co-bar.is-on { transform: none; }
+  .co-bar__sum { display: grid; gap: 2px; }
+  .co-bar__sum b { font: 800 26px/1 var(--f-display); font-variant-numeric: tabular-nums; }
+  .co-bar__sum span { color: var(--texto-2); font-size: 13px; }
+  .btn--xl span { white-space: nowrap; }
+}
