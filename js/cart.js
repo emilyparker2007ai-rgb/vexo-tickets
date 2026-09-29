@@ -1,7 +1,7 @@
 // Shopping cart: items live in this browser (localStorage); checkout is one WhatsApp message.
 // On phones it is a bottom sheet that owns a history entry, so Back closes it.
 import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js';
-import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser } from './ui.js';
+import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance } from './ui.js';
 import { WA_ICON } from './icons.js';
 
 const KEY = 'vexo-cart-v1';
@@ -82,7 +82,9 @@ function cartMessage(code) {
     const where = i.isCategory ? `${i.name} (la tribuna la vemos juntos)` : `${i.name}, ${i.position}`;
     return `${n + 1}) Argentina vs ${m.rival}, ${whenText(m)} en el ${venueOf(m).short}: ${where}. ${i.qty} × ${money(i.price)} = ${money(i.price * i.qty)}`;
   });
-  return ['¡Hola! Quiero reservar estas entradas:', '', ...lines, '', `Total: ${money(total())}`, `Pedido ${code}. ¿Me confirman disponibilidad?`].join('\n');
+  return ['¡Hola! Quiero reservar estas entradas:', '', ...lines, '', `Total: ${money(total())}`,
+    `Para reservar (50%): ${money(deposit(total()))} · Al retirarlas en mano: ${money(balance(total()))}`,
+    `Pedido ${code}. ¿Me confirman disponibilidad?`].join('\n');
 }
 
 function itemHTML(i) {
@@ -120,7 +122,11 @@ function render() {
   body.innerHTML = `${undoHTML()}<ul class="cart__list">${items.map(itemHTML).join('')}</ul>
     <div class="cart__foot">
       <div class="cart__total"><span>Total final</span><b>${money(total())}</b></div>
-      <p class="cart__note">Te confirmamos cada ubicación por WhatsApp y recién ahí pagás.</p>
+      <dl class="cart__split">
+        <div><dt>Para reservar (50%)</dt><dd>${money(deposit(total()))}</dd></div>
+        <div><dt>Al retirarlas en mano (50%)</dt><dd>${money(balance(total()))}</dd></div>
+      </dl>
+      <p class="cart__note">Te confirmamos cada ubicación por WhatsApp y recién ahí pagás la reserva.</p>
       <a class="btn btn--sol btn--xl" data-wa-cta href="${waLink(text)}" target="_blank" rel="noopener">${WA_ICON}<span>Finalizar por WhatsApp</span></a>
       ${inAppHint()}
       <div class="cart__more">

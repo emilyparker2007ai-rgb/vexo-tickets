@@ -5,6 +5,9 @@ const ARS = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
 const TZ = 'America/Argentina/Buenos_Aires';
 
 export const money = (n) => `$${ARS.format(n)}`;
+// Payment: half to reserve, the other half when the ticket is handed over.
+export const deposit = (total) => Math.round(total / 2);
+export const balance = (total) => total - deposit(total);
 export const kMoney = (n) => (n >= 1e6 ? `$${(n / 1e6).toLocaleString('es-AR', { maximumFractionDigits: 2 })}M` : `$${Math.round(n / 1000)}K`);
 
 export const esc = (s) =>

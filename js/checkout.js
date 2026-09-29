@@ -1,6 +1,6 @@
 // Ticket page: every detail of the chosen place, then add to cart or reserve right away on WhatsApp.
 import { MAX_TICKETS } from './data.js';
-import { money, esc, whenText, venueOf, flagImg, tuneWaLink } from './ui.js';
+import { money, esc, whenText, venueOf, flagImg, tuneWaLink, deposit, balance } from './ui.js';
 import { WA_ICON } from './icons.js';
 import { mountMap } from './map.js';
 import { addToCart, openCart, waLink, copyText, inAppHint } from './cart.js';
@@ -24,6 +24,7 @@ function message(sel, qty, code) {
     `${whenText(match, { long: true })} · ${venueOf(match).name}`,
     placeLine(block),
     `Precio final: ${money(block.cat.price)} cada una · Total ${money(block.cat.price * qty)}`,
+    `Para reservar (50%): ${money(deposit(block.cat.price * qty))} · Al retirarlas en mano: ${money(balance(block.cat.price * qty))}`,
     '',
     `Mi código de reserva es ${code}. ¿Me confirman si está disponible?`,
   ].join('\n');
@@ -65,13 +66,17 @@ export function render(root, sel, { onBack, onQty }) {
             <div class="stepper stepper--sm"><button type="button" data-d="-1" aria-label="Una entrada menos">−</button><output id="co-qty">${qty}</output><button type="button" data-d="1" aria-label="Una entrada más">+</button></div>
           </div>
           <div class="co__total"><span>Total final</span><b id="co-total">${money(block.cat.price * qty)}</b></div>
+          <dl class="co__split">
+            <div><dt>Para reservar (50%)</dt><dd id="co-dep"></dd></div>
+            <div><dt>Al retirarlas en mano (50%)</dt><dd id="co-bal"></dd></div>
+          </dl>
           <button class="btn btn--sol btn--xl" type="button" data-act="add" id="co-add">Agregar al carrito</button>
           <a class="btn btn--wa btn--xl" id="co-wa" href="#" target="_blank" rel="noopener">${WA_ICON}<span>Reservar por WhatsApp</span></a>
           ${inAppHint()}
           <ol class="co__steps">
             <li><span><b>Nos escribís por WhatsApp</b> con tu pedido. Te responde una persona, no un robot.</span></li>
-            <li><span><b>Te confirmamos el lugar exacto</b> y recién ahí pagás.</span></li>
-            <li><span><b>Te damos la entrada original</b> en mano, o te la transferimos si es digital.</span></li>
+            <li><span><b>Te confirmamos el lugar exacto</b> y lo reservás pagando el 50%.</span></li>
+            <li><span><b>Te damos la entrada original en mano</b> y pagás el otro 50%.</span></li>
           </ol>
           <details class="co__msg">
             <summary>Ver el mensaje que nos llega</summary>
@@ -112,6 +117,8 @@ export function render(root, sel, { onBack, onQty }) {
     root.querySelector('#co-text').textContent = text;
     root.querySelector('#co-wa').href = waLink(text);
     root.querySelector('#co-total').textContent = money(block.cat.price * qty);
+    root.querySelector('#co-dep').textContent = money(deposit(block.cat.price * qty));
+    root.querySelector('#co-bal').textContent = money(balance(block.cat.price * qty));
     root.querySelector('#co-qty').textContent = qty;
     root.querySelector('#tk-qty').textContent = qty;
     root.querySelector('#tk-qty-l').textContent = qty > 1 ? 'entradas' : 'entrada';

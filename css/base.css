@@ -239,3 +239,10 @@ p { text-wrap: pretty; }
   .cart__body { min-height: 0; overflow: hidden; }
   .cart__list { max-height: 44dvh; }
 }
+
+/* ---- payment split: 50% to reserve, 50% on hand delivery ---- */
+.co__split, .cart__split { display: grid; gap: 6px; margin: 0; padding: 12px 14px; border: 1px solid var(--linea); background: rgba(116, 172, 223, 0.06); }
+.co__split div, .cart__split div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.co__split dt, .cart__split dt { color: var(--texto-2); font-size: 14px; }
+.co__split dd, .cart__split dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.co__split div:first-child dd, .cart__split div:first-child dd { color: var(--sol); }

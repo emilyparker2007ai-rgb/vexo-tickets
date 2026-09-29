@@ -3,7 +3,7 @@ import { MATCHES, INSTAGRAM_URL, MAX_TICKETS } from './data.js';
 import { buildBlocks } from './geometry.js';
 import {
   detailHTML, showTip, hideTip, openSheet, closeSheet, isSheetOpen, matchStatus, statusText, whenText, venueOf,
-  esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink,
+  esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink, deposit,
 } from './ui.js';
 import { WA_ICON } from './icons.js';
 import { render as renderCheckout } from './checkout.js';
@@ -282,8 +282,8 @@ function renderMatch(m) {
         <ul class="cats" id="cats">${m.cats.map(catRowHTML).join('')}</ul>
       </div>
       <ul class="promise">
-        <li><b>Pagás cuando confirmamos</b> tu lugar, nunca antes.</li>
-        <li><b>Entrada original</b>, en mano o transferida a tu cuenta.</li>
+        <li><b>Reservás con el 50%</b> cuando te confirmamos el lugar.</li>
+        <li><b>El otro 50%, en mano</b>, cuando te damos la entrada original.</li>
         <li><b>Te atiende una persona</b> por WhatsApp, de principio a fin.</li>
       </ul>
     </section>`}`;
@@ -339,7 +339,7 @@ function openBuySheet(m, block) {
     return;
   }
   let qty = 2;
-  const totalHTML = () => `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'} · total final</span><b>${money(block.cat.price * qty)}</b>`;
+  const totalHTML = () => `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'} · total final</span><b>${money(block.cat.price * qty)}</b><span>Reservás con ${money(deposit(block.cat.price * qty))} (50%)</span>`;
   const body = block.isCategory
     ? `<p class="tip__label">${esc(block.name)}</p><p class="tip__pos">${esc(block.position)}</p>
        <p class="tip__price">${money(block.cat.price)}</p><p class="tip__unit">precio final por entrada · la tribuna la confirmamos juntos</p>
@@ -393,13 +393,24 @@ function scrollToAnchor(anchor) {
 }
 
 function apply(view, after) {
+  let ran = false;
   const run = () => {
+    if (ran) return;
+    ran = true;
     Object.entries(views).forEach(([k, el]) => { el.hidden = k !== view; });
     after();
     onScroll();
   };
-  if (document.startViewTransition && !reducedMotion()) document.startViewTransition(run);
-  else run();
+  if (!document.startViewTransition || reducedMotion()) { run(); return; }
+  const t = document.startViewTransition(run);
+  t.ready.catch(() => {});
+  t.finished.catch(() => {});
+  // Chrome can leave a transition started inside popstate without calling back: the screen must change anyway.
+  setTimeout(() => {
+    if (ran) return;
+    t.skipTransition();
+    run();
+  }, 150);
 }
 
 function render(entry) {
