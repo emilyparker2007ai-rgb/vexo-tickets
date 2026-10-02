@@ -5,7 +5,7 @@
 // Stand orientation: Sivori north, Centenario south, San Martin west, Belgrano east (Monumental);
 // Willington north, Artime south, Gasparini east, Ardiles west (Kempes).
 
-export const WHATSAPP_NUMBER = ''; // digits only, country + area + number, e.g. 5491100000000
+export const WHATSAPP_NUMBER = '5491153743446'; // digits only, country + area + number, e.g. 5491100000000
 export const INSTAGRAM_URL = '';
 export const MARKET_LABEL = 'StubHub';
 export const MARKET_DATE = '28/09';
