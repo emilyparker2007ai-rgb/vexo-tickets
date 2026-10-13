@@ -17,7 +17,7 @@
 .mhero__sub { margin: 0; max-width: 50ch; font-size: clamp(17px, 1.6vw, 21px); text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7); }
 .mhero__row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 6px; }
 .mhero__nick { color: var(--texto-2); font-size: 14px; }
-.mhero__ribbon { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, #74acdf 0 16.66%, #fff 0 33.33%, #74acdf 0 50%, var(--ra) 0 66.66%, var(--rb) 0 83.33%, var(--rc) 0); }
+.mhero__ribbon { position: absolute; left: 0; right: 0; bottom: 0; height: 8px; background: linear-gradient(90deg, var(--ra) 0 33.33%, var(--rb) 0 50%, #fff 0 66.66%, var(--rc) 0); }
 
 .pick { display: grid; gap: 28px; padding-block: clamp(48px, 6vw, 80px) clamp(64px, 8vw, 110px); }
 .pick__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 40px; }

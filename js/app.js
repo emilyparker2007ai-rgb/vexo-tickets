@@ -4,6 +4,7 @@ import { buildBlocks } from './geometry.js';
 import {
   detailHTML, showTip, hideTip, openSheet, closeSheet, isSheetOpen, matchStatus, statusText, whenText, venueOf,
   esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink, deposit,
+  hasPrice, mul, matchTitle, pricedMatch,
 } from './ui.js';
 import { WA_ICON } from './icons.js';
 import { render as renderCheckout } from './checkout.js';
@@ -12,7 +13,7 @@ import { wordmark } from './logo.js';
 import { mountMap } from './map.js';
 import { CLIENTS, SOLD, CASES } from './clients.js';
 
-const SIM_NOW = new Date('2026-10-01T12:00:00-03:00').getTime();
+const SIM_NOW = new Date('2026-11-01T18:00:00-03:00').getTime();
 const $ = (s) => document.querySelector(s);
 const views = { home: $('#view-home'), match: $('#view-match'), reserva: $('#view-reserva') };
 const blocksCache = new Map();
@@ -25,7 +26,8 @@ const blocksFor = (m) => {
   if (!blocksCache.has(m.id)) blocksCache.set(m.id, buildBlocks(m));
   return blocksCache.get(m.id);
 };
-const fromPrice = (m) => Math.min(...m.cats.map((c) => c.price));
+const fromPrice = (m) => (pricedMatch(m) ? Math.min(...m.cats.map((c) => c.price)) : null);
+const byPrice = (a, b) => (hasPrice(a.price) && hasPrice(b.price) ? a.price - b.price : 0);
 const themeStyle = (m) => `--ra:${m.theme.a};--rb:${m.theme.b};--rc:${m.theme.c}`;
 
 let pointer = 'mouse';
@@ -95,24 +97,24 @@ function cardHTML(m) {
   const done = st === 'finished';
   const dp = dateParts(m);
   const venue = venueOf(m);
-  const cats = [...m.cats].sort((a, b) => a.price - b.price)
+  const cats = [...m.cats].sort(byPrice)
     .map((c) => `<span class="fx__cat">${esc(c.label)} <b>${money(c.price)}</b></span>`).join('');
   const cta = done ? (m.result ? 'Ver cómo salió' : 'Ver el partido') : 'Ver ubicaciones';
   return `<li><button class="fx is-${st}" type="button" data-match="${m.id}" data-bg="${m.id}" style="${themeStyle(m)}">
     <span class="fx__date"><span class="fx__wd">${esc(dp.weekday)}</span><span class="fx__day">${dp.day}</span><span class="fx__mo">${dp.month}</span><span class="fx__hr">${esc(whenText(m).split(' · ')[1])} h</span></span>
     <span class="fx__media">
       <img class="fx__img" src="media/${m.id}.jpg" srcset="media/${m.id}-480.jpg 480w, media/${m.id}.jpg 1280w" sizes="(max-width: 560px) 70vw, 300px" alt="" loading="lazy">
-      <span class="fx__flags">${flagImg('arg')}${flagImg(m.flag)}</span>
+      <span class="fx__flags">${flagImg(m.homeFlag)}${flagImg(m.flag)}</span>
       <span class="fx__ribbon" aria-hidden="true"></span>
     </span>
     <span class="fx__info">
-      <span class="fx__kicker">Amistoso · ${esc(venue.name)}, ${esc(venue.city)}</span>
-      <span class="fx__title">Argentina <em>vs</em> ${esc(m.rival)}</span>
+      <span class="fx__kicker">${esc(m.competition)} · ${esc(venue.name)}, ${esc(venue.city)}</span>
+      <span class="fx__title">${esc(m.home)} <em>vs</em> ${esc(m.rival)}</span>
       <span class="fx__cats">${cats}</span>
     </span>
     <span class="fx__buy">
       <span class="chip chip--${st}">${esc(statusText(m, now()))}</span>
-      ${done ? '' : `<span class="fx__from">desde <b>${money(fromPrice(m))}</b></span>`}
+      ${done ? '' : (hasPrice(fromPrice(m)) ? `<span class="fx__from">desde <b>${money(fromPrice(m))}</b></span>` : '<span class="fx__from">Precio <b>a confirmar</b></span>')}
       <span class="fx__cta">${cta}</span>
     </span>
   </button></li>`;
@@ -241,20 +243,20 @@ function matchHeroHTML(m) {
   const done = st === 'finished';
   const next = MATCHES.find((x) => !isFinished(x) && x.id !== m.id);
   const sub = done
-    ? (m.result ? `Terminó ${m.result.arg} a ${m.result.rival}. Gracias a los que fueron con nosotros.` : 'Gracias a los que fueron con nosotros. Pronto cargamos el resultado.')
+    ? (m.result ? `Terminó ${m.result.home} a ${m.result.rival}. Gracias a los que fueron con nosotros.` : 'Gracias a los que fueron con nosotros. Pronto cargamos el resultado.')
     : m.subline;
   return `<section class="mhero" data-look="${m.id}" style="${themeStyle(m)}">
     ${bgHTML(m.id)}
     <div class="wrap mhero__in">
       <button class="mhero__back" type="button" data-go="home">← Todos los partidos</button>
-      <div class="mhero__flags">${flagImg('arg', 'flag flag--xl')}<span class="mhero__x">vs</span>${flagImg(m.flag, 'flag flag--xl')}</div>
-      <p class="mhero__eyebrow">Amistoso · ${esc(whenText(m, { long: true }))} · ${esc(venue.name)}, ${esc(venue.city)}</p>
+      <div class="mhero__flags">${flagImg(m.homeFlag, 'flag flag--xl')}<span class="mhero__x">vs</span>${flagImg(m.flag, 'flag flag--xl')}</div>
+      <p class="mhero__eyebrow">${esc(m.competition)} · ${esc(whenText(m, { long: true }))} · ${esc(venue.name)}, ${esc(venue.city)}</p>
       <h1 class="mhero__title">${esc(done ? 'Este partido ya se jugó' : m.headline)}</h1>
       <p class="mhero__sub">${esc(sub)}</p>
       <div class="mhero__row">
         <span class="chip chip--${st}">${esc(statusText(m, now()))}</span>
-        <span class="mhero__nick">Enfrente: ${esc(m.nickname)}</span>
-        ${done && next ? `<button class="btn btn--sol" type="button" data-match="${next.id}">Ir a Argentina vs ${esc(next.rival)}</button>` : ''}
+        <span class="mhero__nick">${esc(m.nickname)}</span>
+        ${done && next ? `<button class="btn btn--sol" type="button" data-match="${next.id}">Ir a ${esc(matchTitle(next))}</button>` : ''}
         ${done ? '' : '<a class="btn btn--sol" href="#elegir" data-scroll="elegir">Elegir mi lugar</a>'}
       </div>
     </div>
@@ -274,9 +276,9 @@ function renderMatch(m) {
     ${done ? '' : `<section class="wrap pick" id="elegir" style="${themeStyle(m)}">
       <div class="pick__head">
         <h2 class="pick__title">Elegí tu lugar</h2>
-        <p class="pick__lead">${coarsePointer() ? 'Tocá una tribuna y te mostramos cómo figura en la entrada y su precio final.' : 'Pasá el mouse por cada tribuna para ver su nombre, como figura en la entrada, y su precio final. Nada de sorpresas al pagar.'}</p>
+        <p class="pick__lead">${coarsePointer() ? 'Tocá una tribuna y te mostramos cómo figura en la entrada.' : 'Pasá el mouse por cada tribuna para ver su nombre, como figura en la entrada.'} ${pricedMatch(m) ? 'Siempre con precio final: nada de sorpresas al pagar.' : 'El precio de cada sector te lo confirmamos por WhatsApp.'}</p>
       </div>
-      <nav class="catbar" aria-label="Categorías">${[...m.cats].sort((a, b) => a.price - b.price).map((c) => `<button type="button" class="catbar__pill" data-cat-pill="${c.id}"><i style="background:${priceColor(m, c)}"></i>${esc(c.label)} <b>${kMoney(c.price)}</b></button>`).join('')}</nav>
+      <nav class="catbar" aria-label="Categorías">${[...m.cats].sort(byPrice).map((c) => `<button type="button" class="catbar__pill" data-cat-pill="${c.id}"><i style="background:${priceColor(m, c)}"></i>${esc(c.label)}${hasPrice(c.price) ? ` <b>${kMoney(c.price)}</b>` : ''}</button>`).join('')}</nav>
       <div class="pick__grid">
         <div class="stage" id="stage"></div>
         <ul class="cats" id="cats">${m.cats.map(catRowHTML).join('')}</ul>
@@ -339,10 +341,12 @@ function openBuySheet(m, block) {
     return;
   }
   let qty = 2;
-  const totalHTML = () => `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'} · total final</span><b>${money(block.cat.price * qty)}</b><span>Reservás con ${money(deposit(block.cat.price * qty))} (50%)</span>`;
+  const totalHTML = () => (hasPrice(block.cat.price)
+    ? `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'} · total final</span><b>${money(mul(block.cat.price, qty))}</b><span>Reservás con ${money(deposit(mul(block.cat.price, qty)))} (50%)</span>`
+    : `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'}</span><b>A confirmar</b><span>Te pasamos el precio por WhatsApp</span>`);
   const body = block.isCategory
     ? `<p class="tip__label">${esc(block.name)}</p><p class="tip__pos">${esc(block.position)}</p>
-       <p class="tip__price">${money(block.cat.price)}</p><p class="tip__unit">precio final por entrada · la tribuna la confirmamos juntos</p>
+       <p class="tip__price">${money(block.cat.price)}</p><p class="tip__unit">${hasPrice(block.cat.price) ? 'precio final por entrada' : 'precio a confirmar por WhatsApp'} · la tribuna la confirmamos juntos</p>
        <p class="tip__feel">${esc(block.cat.feel)}</p>${compareHTML(block.cat)}`
     : detailHTML(m, block);
   openSheet({
@@ -535,7 +539,7 @@ document.addEventListener('click', (e) => {
 $('#sim').addEventListener('click', (e) => {
   state.simulated = !state.simulated;
   e.currentTarget.setAttribute('aria-pressed', String(state.simulated));
-  e.currentTarget.textContent = state.simulated ? 'Volver a hoy' : 'Simular 1/10 (Bolivia ya se jugó)';
+  e.currentTarget.textContent = state.simulated ? 'Volver a hoy' : 'Simular 1/11 (ya se jugó)';
   if (state.homeReady) refreshCards();
   if (state.current.view !== 'home') render(state.current);
 });
@@ -571,7 +575,7 @@ function init() {
   });
   paintCartCount();
   $('#cart-btn').addEventListener('click', openCart);
-  const hello = waLink('¡Hola! Quiero consultar por entradas para la Selección.');
+  const hello = waLink('¡Hola! Quiero consultar por entradas para Boca vs River.');
   document.querySelectorAll('[data-wa]').forEach((a) => {
     a.href = hello;
     tuneWaLink(a);

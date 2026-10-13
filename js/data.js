@@ -1,6 +1,6 @@
 // Vexo Tickets data.
-// Vexo prices: Pedro (BRC), 2026-09-28, final price per ticket in ARS.
-// Kickoffs and venues: afa.com.ar, verified 2026-09-28.
+// Superclasico: Boca vs River, Sunday 2026-11-01 15:00 ART, La Bombonera, Torneo Clausura round 15
+// (Liga Profesional, reported 2026-10-08 by Canal 26 and others). Prices not published yet: null = "a confirmar".
 // Market reference: cheapest StubHub listing per sector, 2026-09-28 13:10-13:32 ART, fees excluded.
 // Stand orientation: Sivori north, Centenario south, San Martin west, Belgrano east (Monumental);
 // Willington north, Artime south, Gasparini east, Ardiles west (Kempes).
@@ -46,6 +46,36 @@ export const VENUES = Object.freeze({
       S: ['Platea San Martín Baja', 'Platea San Martín Media', 'Platea San Martín Alta'],
     },
   },
+  // La Bombonera: names as printed on real tickets (Norte Baja, Sur Media, Platea Baja). Drawing is illustrative.
+  bombonera: {
+    name: 'La Bombonera',
+    short: 'La Bombonera',
+    city: 'Buenos Aires',
+    inner: [62, 44],
+    tiers: [
+      { id: 'baja', label: 'Baja', d: [0, 12] },
+      { id: 'media', label: 'Media', d: [14, 25] },
+      { id: 'alta', label: 'Alta', d: [27, 40] },
+    ],
+    sides: [
+      { id: 'E', name: 'Sur', kind: 'end', range: [-38, 38], blocks: 3, ends: ['Palcos', 'Platea'] },
+      { id: 'S', name: 'Platea', kind: 'side', range: [52, 128], blocks: 5, ends: ['Sur', 'Norte'] },
+      { id: 'W', name: 'Norte', kind: 'end', range: [142, 218], blocks: 3, ends: ['Platea', 'Palcos'] },
+      { id: 'N', name: 'Palcos', kind: 'side', range: [232, 308], blocks: 5, ends: ['Norte', 'Sur'] },
+    ],
+    map: {
+      E: ['populares', 'populares', 'populares'],
+      W: ['populares', 'populares', 'populares'],
+      S: ['plateas', 'plateas', 'plateas'],
+      N: ['palcos', 'palcos', 'palcos'],
+    },
+    names: {
+      E: ['Sur Baja', 'Sur Media', 'Sur Alta'],
+      W: ['Norte Baja', 'Norte Media', 'Norte Alta'],
+      S: ['Platea Baja', 'Platea Media', 'Platea Alta'],
+      N: ['Palcos', 'Palcos', 'Palcos'],
+    },
+  },
   kempes: {
     name: 'Estadio Mario Alberto Kempes',
     short: 'Kempes',
@@ -83,55 +113,23 @@ function cat(id, label, price, market, where, feel) {
 
 export const MATCHES = Object.freeze([
   {
-    id: 'bol',
-    rival: 'Bolivia',
-    flag: 'bol',
-    nickname: 'La Verde',
-    kickoff: '2026-09-30T21:00:00-03:00',
-    venue: 'kempes',
-    result: null, // e.g. { arg: 2, rival: 0 } once played
-    theme: { a: '#d52b1e', b: '#f9e300', c: '#007934' },
-    headline: 'Córdoba se viste de celeste',
-    subline: 'Esta vez La Verde juega sin la altura de La Paz. Miércoles a la noche, en el Kempes.',
+    id: 'sc',
+    home: 'Boca',
+    homeFlag: 'boca',
+    rival: 'River',
+    flag: 'river',
+    nickname: 'Superclásico',
+    competition: 'Torneo Clausura 2026 · Fecha 15',
+    kickoff: '2026-11-01T15:00:00-03:00',
+    venue: 'bombonera',
+    result: null, // e.g. { home: 2, rival: 1 } once played
+    theme: { a: '#103f8f', b: '#f6c21c', c: '#e1202e' },
+    headline: 'El partido que frena al país',
+    subline: 'Domingo 1 de noviembre a las 15:00 en La Bombonera. Elegí tu sector y te confirmamos lugar y precio por WhatsApp.',
     cats: [
-      cat('popular', 'Populares', 100000, 83152, 'Popular Willington, detrás del arco norte', 'De pie, al lado del arco, donde se canta todo el partido.'),
-      cat('gasparini', 'Plateas Gasparini', 140000, 151161, 'Platea Gasparini Baja, lateral este', 'Sentado, de costado a la cancha, con la jugada a la vista.'),
-      cat('ardiles', 'Plateas Ardiles', 170000, 192408, 'Platea Ardiles, lateral oeste', 'La platea principal: la mejor vista de la cancha completa.'),
-    ],
-  },
-  {
-    id: 'bfa',
-    rival: 'Burkina Faso',
-    flag: 'bfa',
-    nickname: 'Les Étalons',
-    kickoff: '2026-10-03T21:00:00-03:00',
-    venue: 'monumental',
-    result: null,
-    theme: { a: '#ef2b2d', b: '#fcd116', c: '#009e49' },
-    headline: 'Sábado a la noche, en Núñez',
-    subline: 'Llegan Les Étalons desde Burkina Faso. Nosotros ponemos la cancha llena.',
-    cats: [
-      cat('popular', 'Populares', 100000, 119989, 'Sívori Baja y Centenario Baja, detrás de los arcos', 'De pie, bien cerca del arco, en el corazón del aliento.'),
-      cat('alta', 'Plateas altas', 200000, 228767, 'Plateas altas de las cuatro tribunas', 'Desde arriba se ve toda la cancha, como en la tele pero en vivo.'),
-      cat('baja', 'Plateas bajas', 300000, 818330, 'Platea San Martín Baja y Platea Belgrano Baja, laterales', 'A pocos metros del césped: escuchás la pelota y a los jugadores.'),
-    ],
-  },
-  {
-    id: 'ben',
-    rival: 'Benín',
-    flag: 'ben',
-    nickname: 'Les Guépards',
-    kickoff: '2026-10-06T20:00:00-03:00',
-    venue: 'monumental',
-    result: null,
-    theme: { a: '#e8112d', b: '#fcd116', c: '#008751' },
-    headline: 'La noche que nadie se quiere perder',
-    subline: 'En la boletería oficial se agotó en menos de dos horas. Nosotros todavía te conseguimos lugar.',
-    cats: [
-      cat('popular', 'Populares', 300000, 639031, 'Sívori Baja y Centenario Baja, detrás de los arcos', 'De pie, bien cerca del arco, en el corazón del aliento.'),
-      cat('alta', 'Plateas altas', 400000, 723913, 'Plateas altas de las cuatro tribunas', 'Desde arriba se ve toda la cancha, como en la tele pero en vivo.'),
-      cat('media', 'Plateas medias', 600000, 808396, 'Plateas medias de las cuatro tribunas', 'El punto justo: cerca y con toda la cancha a la vista.'),
-      cat('baja', 'Plateas bajas', 700000, 1637003, 'Platea San Martín Baja y Platea Belgrano Baja, laterales', 'A pocos metros del césped: escuchás la pelota y a los jugadores.'),
+      cat('populares', 'Populares', null, null, 'Norte y Sur, detrás de los arcos', 'De pie, en el corazón del aliento, con la cancha temblando.'),
+      cat('plateas', 'Plateas', null, null, 'Platea Baja, Media y Alta, lateral', 'Sentado, de costado a la cancha, con todo el partido a la vista.'),
+      cat('palcos', 'Palcos', null, null, 'Lado de los palcos', 'La experiencia más cómoda de La Bombonera.'),
     ],
   },
 ]);

@@ -1,7 +1,7 @@
 // Stadium map: top-down SVG with the final price written on each stand.
 // Used big on the match page and small on the reservation ticket.
 import { extents, pitchLines, PITCH } from './geometry.js';
-import { venueOf, priceColor, priceT, kMoney, money, esc } from './ui.js';
+import { venueOf, priceColor, priceT, kMoney, money, esc, hasPrice } from './ui.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 const f1 = (n) => n.toFixed(1);
@@ -25,7 +25,7 @@ function priceLabels(match, blocks, turn) {
       const ink = priceT(match, b.cat) < 0.4 ? '#eef2f7' : '#070a12';
       const [x, y] = b.center.map(f1);
       const upright = b.side.kind === 'end' ? ` transform="rotate(-90 ${x} ${y})"` : '';
-      return `<text class="plano__price" x="${x}" y="${y}" fill="${ink}"${upright}>${kMoney(b.cat.price)}</text>`;
+      return `<text class="plano__price" x="${x}" y="${y}" fill="${ink}"${upright}>${hasPrice(b.cat.price) ? kMoney(b.cat.price) : esc(b.cat.label)}</text>`;
     })
     .join('');
 }

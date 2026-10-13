@@ -1,7 +1,7 @@
 // Shopping cart: items live in this browser (localStorage); checkout is one WhatsApp message.
 // On phones it is a bottom sheet that owns a history entry, so Back closes it.
 import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js';
-import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance } from './ui.js';
+import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance, mul, hasPrice, matchTitle } from './ui.js';
 import { WA_ICON } from './icons.js';
 
 const KEY = 'vexo-cart-v1';
@@ -29,7 +29,8 @@ function save() {
 export const onCartChange = (fn) => listeners.add(fn);
 export const cartCount = () => items.reduce((n, i) => n + i.qty, 0);
 export const isCartOpen = () => open;
-const total = () => items.reduce((n, i) => n + i.price * i.qty, 0);
+// One unpriced item makes the whole total "a confirmar" (null).
+const total = () => (items.every((i) => hasPrice(i.price)) ? items.reduce((n, i) => n + i.price * i.qty, 0) : null);
 
 export function addToCart(item) {
   const found = items.find((i) => i.key === item.key);
@@ -80,24 +81,27 @@ function cartMessage(code) {
   const lines = items.map((i, n) => {
     const m = MATCHES.find((x) => x.id === i.matchId);
     const where = i.isCategory ? `${i.name} (la tribuna la vemos juntos)` : `${i.name}, ${i.position}`;
-    return `${n + 1}) Argentina vs ${m.rival}, ${whenText(m)} en el ${venueOf(m).short}: ${where}. ${i.qty} × ${money(i.price)} = ${money(i.price * i.qty)}`;
+    const price = hasPrice(i.price) ? `${i.qty} × ${money(i.price)} = ${money(mul(i.price, i.qty))}` : `${i.qty} ${i.qty > 1 ? 'entradas' : 'entrada'}, precio a confirmar`;
+    return `${n + 1}) ${matchTitle(m)}, ${whenText(m)} en ${venueOf(m).short}: ${where}. ${price}`;
   });
-  return ['¡Hola! Quiero reservar estas entradas:', '', ...lines, '', `Total: ${money(total())}`,
-    `Para reservar (50%): ${money(deposit(total()))} · Al retirarlas en mano: ${money(balance(total()))}`,
+  const pay = hasPrice(total())
+    ? [`Total: ${money(total())}`, `Para reservar (50%): ${money(deposit(total()))} · Al retirarlas en mano: ${money(balance(total()))}`]
+    : ['¿Me pasan el precio? Sé que se reserva con el 50% y el resto se paga al retirarlas.'];
+  return ['¡Hola! Quiero reservar estas entradas:', '', ...lines, '', ...pay,
     `Pedido ${code}. ¿Me confirman disponibilidad?`].join('\n');
 }
 
 function itemHTML(i) {
   const m = MATCHES.find((x) => x.id === i.matchId);
   return `<li class="cart__item" data-key="${esc(i.key)}">
-    <div class="cart__flags">${flagImg('arg')}${flagImg(m.flag)}</div>
+    <div class="cart__flags">${flagImg(m.homeFlag)}${flagImg(m.flag)}</div>
     <div class="cart__info">
-      <p class="cart__match">Argentina vs ${esc(m.rival)}</p>
+      <p class="cart__match">${esc(matchTitle(m))}</p>
       <p class="cart__meta">${esc(whenText(m))} · ${esc(venueOf(m).short)}</p>
       <p class="cart__place">${esc(i.name)}${i.isCategory ? '' : ` · ${esc(i.position)}`}</p>
       <div class="cart__row">
         <div class="stepper stepper--sm"><button type="button" data-q="-1" aria-label="Una entrada menos">−</button><output>${i.qty}</output><button type="button" data-q="1" aria-label="Una entrada más">+</button></div>
-        <b class="cart__sub">${money(i.price * i.qty)}</b>
+        <b class="cart__sub">${money(mul(i.price, i.qty))}</b>
       </div>
       <button class="cart__remove" type="button" data-remove>Quitar</button>
     </div>
@@ -122,11 +126,11 @@ function render() {
   body.innerHTML = `${undoHTML()}<ul class="cart__list">${items.map(itemHTML).join('')}</ul>
     <div class="cart__foot">
       <div class="cart__total"><span>Total final</span><b>${money(total())}</b></div>
-      <dl class="cart__split">
+      <dl class="cart__split"${hasPrice(total()) ? '' : ' hidden'}>
         <div><dt>Para reservar (50%)</dt><dd>${money(deposit(total()))}</dd></div>
         <div><dt>Al retirarlas en mano (50%)</dt><dd>${money(balance(total()))}</dd></div>
       </dl>
-      <p class="cart__note">Te confirmamos cada ubicación por WhatsApp y recién ahí pagás la reserva.</p>
+      <p class="cart__note">${hasPrice(total()) ? 'Te confirmamos cada ubicación por WhatsApp y recién ahí pagás la reserva.' : 'Te confirmamos ubicación y precio por WhatsApp. Reservás con el 50% y el resto lo pagás al retirar.'}</p>
       <a class="btn btn--sol btn--xl" data-wa-cta href="${waLink(text)}" target="_blank" rel="noopener">${WA_ICON}<span>Finalizar por WhatsApp</span></a>
       ${inAppHint()}
       <div class="cart__more">

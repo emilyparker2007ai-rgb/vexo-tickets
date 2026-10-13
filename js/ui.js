@@ -4,11 +4,19 @@ import { MARKET_LABEL, MARKET_DATE, VENUES } from './data.js';
 const ARS = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
 const TZ = 'America/Argentina/Buenos_Aires';
 
-export const money = (n) => `$${ARS.format(n)}`;
+// A price can be unknown (null): the place is shown and reserved, and the price is confirmed on WhatsApp.
+export const hasPrice = (n) => typeof n === 'number' && Number.isFinite(n);
+export const money = (n) => (hasPrice(n) ? `$${ARS.format(n)}` : 'A confirmar');
+export const mul = (price, qty) => (hasPrice(price) ? price * qty : null);
 // Payment: half to reserve, the other half when the ticket is handed over.
-export const deposit = (total) => Math.round(total / 2);
-export const balance = (total) => total - deposit(total);
-export const kMoney = (n) => (n >= 1e6 ? `$${(n / 1e6).toLocaleString('es-AR', { maximumFractionDigits: 2 })}M` : `$${Math.round(n / 1000)}K`);
+export const deposit = (total) => (hasPrice(total) ? Math.round(total / 2) : null);
+export const balance = (total) => (hasPrice(total) ? total - deposit(total) : null);
+export const kMoney = (n) => {
+  if (!hasPrice(n)) return 'Consultar';
+  return n >= 1e6 ? `$${(n / 1e6).toLocaleString('es-AR', { maximumFractionDigits: 2 })}M` : `$${Math.round(n / 1000)}K`;
+};
+export const matchTitle = (m) => `${m.home} vs ${m.rival}`;
+export const pricedMatch = (m) => m.cats.every((c) => hasPrice(c.price));
 
 export const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -22,6 +30,11 @@ export function priceRange(match) {
 }
 
 export function priceT(match, cat) {
+  // Without prices the color tells the category apart (same order as in the data).
+  if (!pricedMatch(match)) {
+    const n = match.cats.length;
+    return n > 1 ? 0.12 + (0.88 * match.cats.findIndex((c) => c.id === cat.id)) / (n - 1) : 0.55;
+  }
   const [lo, hi] = priceRange(match);
   return hi === lo ? 1 : (cat.price - lo) / (hi - lo);
 }
@@ -45,6 +58,7 @@ export function priceColor(match, cat) {
 }
 
 export function barsHTML(match, catId) {
+  if (!pricedMatch(match)) return '';
   const cats = [...match.cats].sort((a, b) => a.price - b.price);
   const max = cats[cats.length - 1].price;
   const bars = cats
@@ -55,6 +69,7 @@ export function barsHTML(match, catId) {
 }
 
 export function compareHTML(cat) {
+  if (!hasPrice(cat.price) || !hasPrice(cat.market)) return '';
   const saving = cat.market - cat.price;
   if (saving <= 0) return '';
   const pct = Math.round((saving / cat.market) * 100);
@@ -71,7 +86,7 @@ export function detailHTML(match, block) {
   return `<p class="tip__label">${esc(block.name)}</p>
     <p class="tip__pos">${esc(block.position)} · ${esc(block.cat.label)}</p>
     <p class="tip__price">${money(block.cat.price)}</p>
-    <p class="tip__unit">precio final por entrada</p>
+    <p class="tip__unit">${hasPrice(block.cat.price) ? 'precio final por entrada' : 'te confirmamos el precio por WhatsApp'}</p>
     <p class="tip__feel">${esc(block.cat.feel)}</p>
     ${barsHTML(match, block.cat.id)}
     ${compareHTML(block.cat)}`;
@@ -242,6 +257,6 @@ export function whenText(match, { long = false } = {}) {
 }
 
 export function flagImg(code, cls = 'flag') {
-  const names = { arg: 'Argentina', bol: 'Bolivia', bfa: 'Burkina Faso', ben: 'Benín' };
-  return `<img class="${cls}" src="img/flags/${code}.svg" alt="Bandera de ${names[code]}" width="60" height="40">`;
+  const names = { arg: 'Bandera de Argentina', bol: 'Bandera de Bolivia', bfa: 'Bandera de Burkina Faso', ben: 'Bandera de Benín', boca: 'Colores de Boca', river: 'Colores de River' };
+  return `<img class="${cls}" src="img/flags/${code}.svg" alt="${names[code]}" width="60" height="40">`;
 }

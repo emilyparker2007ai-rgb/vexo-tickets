@@ -1,6 +1,6 @@
 // Ticket page: every detail of the chosen place, then add to cart or reserve right away on WhatsApp.
 import { MAX_TICKETS } from './data.js';
-import { money, esc, whenText, venueOf, flagImg, tuneWaLink, deposit, balance } from './ui.js';
+import { money, esc, whenText, venueOf, flagImg, tuneWaLink, deposit, balance, mul, hasPrice, matchTitle } from './ui.js';
 import { WA_ICON } from './icons.js';
 import { mountMap } from './map.js';
 import { addToCart, openCart, waLink, copyText, inAppHint } from './cart.js';
@@ -19,12 +19,14 @@ function message(sel, qty, code) {
   const { match, block } = sel;
   const plural = qty > 1 ? `${qty} entradas` : '1 entrada';
   return [
-    `¡Hola! Quiero reservar ${plural} para Argentina vs ${match.rival}.`,
+    `¡Hola! Quiero reservar ${plural} para ${matchTitle(match)}.`,
     '',
     `${whenText(match, { long: true })} · ${venueOf(match).name}`,
     placeLine(block),
-    `Precio final: ${money(block.cat.price)} cada una · Total ${money(block.cat.price * qty)}`,
-    `Para reservar (50%): ${money(deposit(block.cat.price * qty))} · Al retirarlas en mano: ${money(balance(block.cat.price * qty))}`,
+    ...(hasPrice(block.cat.price)
+      ? [`Precio final: ${money(block.cat.price)} cada una · Total ${money(mul(block.cat.price, qty))}`,
+        `Para reservar (50%): ${money(deposit(mul(block.cat.price, qty)))} · Al retirarlas en mano: ${money(balance(mul(block.cat.price, qty)))}`]
+      : ['¿Me pasan el precio? Sé que se reserva con el 50% y el resto se paga al retirarlas.']),
     '',
     `Mi código de reserva es ${code}. ¿Me confirman si está disponible?`,
   ].join('\n');
@@ -42,8 +44,8 @@ export function render(root, sel, { onBack, onQty }) {
       <div class="co__grid">
         <article class="ticket" aria-label="Detalle de tu entrada">
           <div class="ticket__main">
-            <div class="ticket__flags">${flagImg('arg')}<span>vs</span>${flagImg(match.flag)}</div>
-            <h1 class="ticket__title"><span>Argentina</span><span class="ticket__vs">vs</span><span>${esc(match.rival)}</span></h1>
+            <div class="ticket__flags">${flagImg(match.homeFlag)}<span>vs</span>${flagImg(match.flag)}</div>
+            <h1 class="ticket__title"><span>${esc(match.home)}</span><span class="ticket__vs">vs</span><span>${esc(match.rival)}</span></h1>
             <dl class="ticket__facts">
               <div><dt>Cuándo</dt><dd>${esc(whenText(match, { long: true }))}</dd></div>
               <div><dt>Dónde</dt><dd>${esc(venue.name)}</dd></div>
@@ -60,13 +62,14 @@ export function render(root, sel, { onBack, onQty }) {
 
         <aside class="co__sum" aria-label="Resumen">
           <p class="co__hello">Ya casi estás en la cancha</p>
-          <div class="co__line"><span>Precio final por entrada</span><b>${money(block.cat.price)}</b></div>
+          <div class="co__line"><span>${hasPrice(block.cat.price) ? 'Precio final por entrada' : 'Precio por entrada'}</span><b>${money(block.cat.price)}</b></div>
           <div class="co__line">
             <span>Cantidad</span>
             <div class="stepper stepper--sm"><button type="button" data-d="-1" aria-label="Una entrada menos">−</button><output id="co-qty">${qty}</output><button type="button" data-d="1" aria-label="Una entrada más">+</button></div>
           </div>
-          <div class="co__total"><span>Total final</span><b id="co-total">${money(block.cat.price * qty)}</b></div>
-          <dl class="co__split">
+          <div class="co__total"><span>Total final</span><b id="co-total"></b></div>
+          ${hasPrice(block.cat.price) ? '' : '<p class="co__note">Te pasamos el precio por WhatsApp. Reservás con el 50% y el resto lo pagás al retirar.</p>'}
+          <dl class="co__split"${hasPrice(block.cat.price) ? '' : ' hidden'}>
             <div><dt>Para reservar (50%)</dt><dd id="co-dep"></dd></div>
             <div><dt>Al retirarlas en mano (50%)</dt><dd id="co-bal"></dd></div>
           </dl>
@@ -116,15 +119,15 @@ export function render(root, sel, { onBack, onQty }) {
     const text = message(sel, qty, code);
     root.querySelector('#co-text').textContent = text;
     root.querySelector('#co-wa').href = waLink(text);
-    root.querySelector('#co-total').textContent = money(block.cat.price * qty);
-    root.querySelector('#co-dep').textContent = money(deposit(block.cat.price * qty));
-    root.querySelector('#co-bal').textContent = money(balance(block.cat.price * qty));
+    root.querySelector('#co-total').textContent = money(mul(block.cat.price, qty));
+    root.querySelector('#co-dep').textContent = money(deposit(mul(block.cat.price, qty)));
+    root.querySelector('#co-bal').textContent = money(balance(mul(block.cat.price, qty)));
     root.querySelector('#co-qty').textContent = qty;
     root.querySelector('#tk-qty').textContent = qty;
     root.querySelector('#tk-qty-l').textContent = qty > 1 ? 'entradas' : 'entrada';
     root.querySelector('[data-act="copy"]').textContent = 'Copiar mensaje';
-    root.querySelector('#bar-total').textContent = money(block.cat.price * qty);
-    root.querySelector('#bar-meta').textContent = `${qty} ${qty > 1 ? 'entradas' : 'entrada'} · precio final`;
+    root.querySelector('#bar-total').textContent = money(mul(block.cat.price, qty));
+    root.querySelector('#bar-meta').textContent = `${qty} ${qty > 1 ? 'entradas' : 'entrada'} · ${hasPrice(block.cat.price) ? 'precio final' : 'precio por WhatsApp'}`;
   };
   update();
 

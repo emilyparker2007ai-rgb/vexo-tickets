@@ -65,7 +65,7 @@
 .fx[data-bg="bol"] .fx__img { filter: blur(2px); transform: scale(1.04); }
 .fx__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(7, 10, 18, 0.7)); }
 .fx__flags { position: absolute; left: 14px; bottom: 16px; z-index: 1; display: flex; gap: 8px; }
-.fx__ribbon { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 4px; background: linear-gradient(90deg, #74acdf 0 16.66%, #fff 0 33.33%, #74acdf 0 50%, var(--ra) 0 66.66%, var(--rb) 0 83.33%, var(--rc) 0); }
+.fx__ribbon { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; height: 4px; background: linear-gradient(90deg, var(--ra) 0 33.33%, var(--rb) 0 50%, #fff 0 66.66%, var(--rc) 0); }
 @media (hover: hover) { .fx:hover .fx__img { transform: scale(1.06); } }
 .fx__info { display: grid; align-content: center; gap: 10px; padding: 22px 26px; }
 .fx__kicker { font-size: 14px; color: var(--texto-2); }
