@@ -1,7 +1,7 @@
 // Stadium map: top-down SVG with the final price written on each stand.
 // Used big on the match page and small on the reservation ticket.
-import { extents, pitchLines, PITCH } from './geometry.js';
-import { venueOf, priceColor, priceT, kMoney, money, esc, hasPrice } from './ui.js';
+import { extents, pitchLines, PITCH } from './geometry.js?v=a6849d3409';
+import { venueOf, priceColor, priceT, kMoney, money, esc, hasPrice } from './ui.js?v=a6849d3409';
 
 const NS = 'http://www.w3.org/2000/svg';
 const f1 = (n) => n.toFixed(1);

@@ -1,8 +1,8 @@
 // Shopping cart: items live in this browser (localStorage); checkout is one WhatsApp message.
 // On phones it is a bottom sheet that owns a history entry, so Back closes it.
-import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js';
-import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance, mul, hasPrice, matchTitle } from './ui.js';
-import { WA_ICON } from './icons.js';
+import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js?v=a6849d3409';
+import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance, mul, hasPrice, matchTitle } from './ui.js?v=a6849d3409';
+import { WA_ICON } from './icons.js?v=a6849d3409';
 
 const KEY = 'vexo-cart-v1';
 let items = load();
