@@ -10,19 +10,19 @@ export const MARKET_LABEL = 'StubHub';
 export const MARKET_DATE = '28/09';
 export const MAX_TICKETS = 4;
 
-// Club colors for the round badges (drawn from colors, no crests): pattern + colors.
+// Club crests (Wikimedia Commons files, see assets/escudos-raw/sources.json); colors theme the cards.
 export const CLUBS = Object.freeze({
-  arg: { name: 'Argentina', pattern: 'vstripes', colors: ['#74acdf', '#ffffff'] },
-  boca: { name: 'Boca', pattern: 'hband', colors: ['#103f8f', '#f6c21c'] },
-  river: { name: 'River', pattern: 'sash', colors: ['#ffffff', '#e1202e'] },
-  racing: { name: 'Racing', pattern: 'vstripes', colors: ['#6cb4ee', '#ffffff'] },
-  independiente: { name: 'Independiente', pattern: 'solid', colors: ['#d4162c', '#ffffff'] },
-  estudiantes: { name: 'Estudiantes', pattern: 'vstripes', colors: ['#d4162c', '#ffffff'] },
-  sanlorenzo: { name: 'San Lorenzo', pattern: 'vstripes', colors: ['#1d3a8a', '#c8102e'] },
-  belgrano: { name: 'Belgrano', pattern: 'solid', colors: ['#5fb7e8', '#ffffff'] },
-  talleres: { name: 'Talleres', pattern: 'vstripes', colors: ['#0b2a6f', '#ffffff'] },
-  newells: { name: "Newell's", pattern: 'halves', colors: ['#d4162c', '#111111'] },
-  velez: { name: 'Vélez', pattern: 'chevron', colors: ['#ffffff', '#0a3d91'] },
+  arg: { name: 'Argentina', pattern: 'vstripes', colors: ['#74acdf', '#ffffff'], logo: 'img/flags/arg.svg' },
+  boca: { name: 'Boca', pattern: 'hband', colors: ['#103f8f', '#f6c21c'], logo: 'img/escudos/boca.png' },
+  river: { name: 'River', pattern: 'sash', colors: ['#ffffff', '#e1202e'], logo: 'img/escudos/river.svg' },
+  racing: { name: 'Racing', pattern: 'vstripes', colors: ['#6cb4ee', '#ffffff'], logo: 'img/escudos/racing.svg' },
+  independiente: { name: 'Independiente', pattern: 'solid', colors: ['#d4162c', '#ffffff'], logo: 'img/escudos/independiente.svg' },
+  estudiantes: { name: 'Estudiantes', pattern: 'vstripes', colors: ['#d4162c', '#ffffff'], logo: 'img/escudos/estudiantes.svg' },
+  sanlorenzo: { name: 'San Lorenzo', pattern: 'vstripes', colors: ['#1d3a8a', '#c8102e'], logo: 'img/escudos/sanlorenzo.svg' },
+  belgrano: { name: 'Belgrano', pattern: 'solid', colors: ['#5fb7e8', '#ffffff'], logo: 'img/escudos/belgrano.svg' },
+  talleres: { name: 'Talleres', pattern: 'vstripes', colors: ['#0b2a6f', '#ffffff'], logo: 'img/escudos/talleres.svg' },
+  newells: { name: "Newell's", pattern: 'halves', colors: ['#d4162c', '#111111'], logo: 'img/escudos/newells.svg' },
+  velez: { name: 'Vélez', pattern: 'chevron', colors: ['#ffffff', '#0a3d91'], logo: 'img/escudos/velez.svg' },
 });
 
 // Generic stadium: home popular behind one goal, plateas on the sides, away end closed.

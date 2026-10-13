@@ -1,17 +1,17 @@
 // Vexo Tickets: pick the match, pick your place, reserve on WhatsApp.
-import { MATCHES, INSTAGRAM_URL, MAX_TICKETS, UPCOMING_SELECCION } from './data.js?v=3e37292e9f';
-import { buildBlocks } from './geometry.js?v=3e37292e9f';
+import { MATCHES, INSTAGRAM_URL, MAX_TICKETS, UPCOMING_SELECCION } from './data.js?v=ceef228ea5';
+import { buildBlocks } from './geometry.js?v=ceef228ea5';
 import {
   detailHTML, showTip, hideTip, openSheet, closeSheet, isSheetOpen, matchStatus, statusText, whenText, venueOf,
   esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink,
   hasPrice, mul, matchTitle, pricedMatch,
-} from './ui.js?v=3e37292e9f';
-import { WA_ICON } from './icons.js?v=3e37292e9f';
-import { render as renderCheckout } from './checkout.js?v=3e37292e9f';
-import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=3e37292e9f';
-import { wordmark } from './logo.js?v=3e37292e9f';
-import { mountMap } from './map.js?v=3e37292e9f';
-import { CLIENTS, SOLD, CASES } from './clients.js?v=3e37292e9f';
+} from './ui.js?v=ceef228ea5';
+import { WA_ICON } from './icons.js?v=ceef228ea5';
+import { render as renderCheckout } from './checkout.js?v=ceef228ea5';
+import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=ceef228ea5';
+import { wordmark } from './logo.js?v=ceef228ea5';
+import { mountMap } from './map.js?v=ceef228ea5';
+import { CLIENTS, SOLD, CASES } from './clients.js?v=ceef228ea5';
 
 const HOME_ANCHORS = ['clientes', 'partidos', 'experiencias'];
 const SIM_NOW = new Date('2026-11-01T18:00:00-03:00').getTime();

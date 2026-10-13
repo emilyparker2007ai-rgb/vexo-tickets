@@ -1,5 +1,5 @@
 // Shared UI helpers: money, names, price colors, tooltip, bottom sheet, match status.
-import { MARKET_LABEL, MARKET_DATE, VENUES, CLUBS } from './data.js?v=3e37292e9f';
+import { MARKET_LABEL, MARKET_DATE, VENUES, CLUBS } from './data.js?v=ceef228ea5';
 
 const ARS = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
 const TZ = 'America/Argentina/Buenos_Aires';
@@ -270,6 +270,10 @@ let badgeSeq = 0;
 export function flagImg(code, cls = 'flag') {
   const club = CLUBS[code];
   if (!club) return '';
+  if (club.logo) {
+    const flag = code === 'arg';
+    return `<span class="${cls} badge badge--logo${flag ? ' badge--flag' : ''}"><img src="${club.logo}" alt="${esc(flag ? 'Bandera de Argentina' : `Escudo de ${club.name}`)}" loading="lazy" decoding="async"></span>`;
+  }
   const id = `bdg${badgeSeq += 1}`;
   return `<span class="${cls} badge" role="img" aria-label="${esc(club.name)}"><svg viewBox="0 0 48 48" aria-hidden="true">
     <defs><clipPath id="${id}"><circle cx="24" cy="24" r="22"/></clipPath></defs>
