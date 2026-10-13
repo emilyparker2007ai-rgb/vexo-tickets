@@ -1,9 +1,9 @@
 // Ticket page: every detail of the chosen place, then add to cart or reserve right away on WhatsApp.
-import { MAX_TICKETS } from './data.js?v=cbfcb22a0e';
-import { money, esc, whenText, venueOf, flagImg, tuneWaLink, mul, hasPrice, matchTitle } from './ui.js?v=cbfcb22a0e';
-import { WA_ICON } from './icons.js?v=cbfcb22a0e';
-import { mountMap } from './map.js?v=cbfcb22a0e';
-import { addToCart, openCart, waLink, copyText, inAppHint } from './cart.js?v=cbfcb22a0e';
+import { MAX_TICKETS } from './data.js?v=3e37292e9f';
+import { money, esc, whenText, venueOf, flagImg, tuneWaLink, mul, hasPrice, matchTitle } from './ui.js?v=3e37292e9f';
+import { WA_ICON } from './icons.js?v=3e37292e9f';
+import { mountMap } from './map.js?v=3e37292e9f';
+import { addToCart, openCart, waLink, copyText, inAppHint } from './cart.js?v=3e37292e9f';
 
 function reservationCode(match, block) {
   const n = Math.floor(1000 + Math.random() * 9000);

@@ -1,17 +1,17 @@
 // Vexo Tickets: pick the match, pick your place, reserve on WhatsApp.
-import { MATCHES, INSTAGRAM_URL, MAX_TICKETS } from './data.js?v=cbfcb22a0e';
-import { buildBlocks } from './geometry.js?v=cbfcb22a0e';
+import { MATCHES, INSTAGRAM_URL, MAX_TICKETS, UPCOMING_SELECCION } from './data.js?v=3e37292e9f';
+import { buildBlocks } from './geometry.js?v=3e37292e9f';
 import {
   detailHTML, showTip, hideTip, openSheet, closeSheet, isSheetOpen, matchStatus, statusText, whenText, venueOf,
   esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink,
   hasPrice, mul, matchTitle, pricedMatch,
-} from './ui.js?v=cbfcb22a0e';
-import { WA_ICON } from './icons.js?v=cbfcb22a0e';
-import { render as renderCheckout } from './checkout.js?v=cbfcb22a0e';
-import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=cbfcb22a0e';
-import { wordmark } from './logo.js?v=cbfcb22a0e';
-import { mountMap } from './map.js?v=cbfcb22a0e';
-import { CLIENTS, SOLD, CASES } from './clients.js?v=cbfcb22a0e';
+} from './ui.js?v=3e37292e9f';
+import { WA_ICON } from './icons.js?v=3e37292e9f';
+import { render as renderCheckout } from './checkout.js?v=3e37292e9f';
+import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=3e37292e9f';
+import { wordmark } from './logo.js?v=3e37292e9f';
+import { mountMap } from './map.js?v=3e37292e9f';
+import { CLIENTS, SOLD, CASES } from './clients.js?v=3e37292e9f';
 
 const HOME_ANCHORS = ['clientes', 'partidos', 'experiencias'];
 const SIM_NOW = new Date('2026-11-01T18:00:00-03:00').getTime();
@@ -95,39 +95,80 @@ function dateParts(m) {
 
 function cardHTML(m) {
   const st = matchStatus(m, now());
-  const done = st === 'finished';
   const dp = dateParts(m);
   const venue = venueOf(m);
-  const cats = [...m.cats].sort(byPrice)
-    .map((c) => `<span class="fx__cat">${esc(c.label)} <b>${money(c.price)}</b></span>`).join('');
-  const cta = done ? (m.result ? 'Ver cómo salió' : 'Ver el partido') : 'Ver ubicaciones';
-  return `<li><button class="fx is-${st}" type="button" data-match="${m.id}" data-bg="${m.id}" style="${themeStyle(m)}">
-    <span class="fx__date"><span class="fx__wd">${esc(dp.weekday)}</span><span class="fx__day">${dp.day}</span><span class="fx__mo">${dp.month}</span><span class="fx__hr">${esc(whenText(m).split(' · ')[1])} h</span></span>
-    <span class="fx__media">
-      <img class="fx__img" src="media/${m.id}.jpg" srcset="media/${m.id}-480.jpg 480w, media/${m.id}.jpg 1280w" sizes="(max-width: 560px) 70vw, 300px" alt="" loading="lazy">
-      <span class="fx__flags">${flagImg(m.homeFlag)}${flagImg(m.flag)}</span>
-      <span class="fx__ribbon" aria-hidden="true"></span>
+  const tags = (m.tags || []).join(' ');
+  return `<li class="fxs__item" data-tags="${esc(tags)}"><button class="fx is-${st}" type="button" data-match="${m.id}" style="${themeStyle(m)}">
+    <span class="fx__glow" aria-hidden="true"></span>
+    <span class="fx__top">
+      <span class="fx__comp">${esc(m.competition.replace('Torneo ', ''))}</span>
+      ${m.tags.includes('clasico') ? '<span class="fx__tag">Clásico</span>' : ''}
     </span>
-    <span class="fx__info">
-      <span class="fx__kicker">${esc(m.competition)} · ${esc(venue.name)}, ${esc(venue.city)}</span>
-      <span class="fx__title">${esc(m.home)} <em>vs</em> ${esc(m.rival)}</span>
-      <span class="fx__cats">${cats}</span>
+    <span class="fx__teams">
+      <span class="fx__team">${flagImg(m.homeFlag, 'fx__badge')}<b>${esc(m.home)}</b></span>
+      <span class="fx__vs">vs</span>
+      <span class="fx__team">${flagImg(m.flag, 'fx__badge')}<b>${esc(m.rival)}</b></span>
     </span>
-    <span class="fx__buy">
+    <span class="fx__when"><b>${esc(dp.weekday)} ${dp.day} ${dp.month.toLowerCase()}</b> · ${esc(whenText(m).split(' · ')[1])} h</span>
+    <span class="fx__venue">${esc(venue.short)}, ${esc(venue.city)}</span>
+    <span class="fx__foot">
       <span class="chip chip--${st}">${esc(statusText(m, now()))}</span>
-      ${done ? '' : (hasPrice(fromPrice(m)) ? `<span class="fx__from">desde <b>${money(fromPrice(m))}</b></span>` : '<span class="fx__from">Precio <b>a confirmar</b></span>')}
-      <span class="fx__cta">${cta}</span>
+      <span class="fx__cta">Ver ubicaciones <i aria-hidden="true">→</i></span>
     </span>
   </button></li>`;
 }
 
+function seleccionCardHTML() {
+  return `<li class="fxs__item" data-tags="seleccion"><a class="fx fx--soon" data-wa data-wa-text="¡Hola! Quiero entradas para la Selección en la fecha FIFA de noviembre. Avisame apenas confirmen rival y sede." href="https://wa.me/" target="_blank" rel="noopener" style="--ra:#74acdf;--rb:#ffffff;--rc:#f6b40e">
+    <span class="fx__glow" aria-hidden="true"></span>
+    <span class="fx__top"><span class="fx__comp">Amistoso internacional</span><span class="fx__tag fx__tag--sol">Próximamente</span></span>
+    <span class="fx__teams"><span class="fx__team">${flagImg('arg', 'fx__badge')}<b>${esc(UPCOMING_SELECCION.title)}</b></span></span>
+    <span class="fx__when"><b>${esc(UPCOMING_SELECCION.when)}</b></span>
+    <span class="fx__venue">${esc(UPCOMING_SELECCION.note)}</span>
+    <span class="fx__foot"><span class="chip">Rival a confirmar</span><span class="fx__cta">Avisame <i aria-hidden="true">→</i></span></span>
+  </a></li>`;
+}
+
+const FILTERS = [
+  ['todos', 'Todos'], ['clasico', 'Clásicos'], ['seleccion', 'Selección'], ['boca', 'Boca'], ['river', 'River'],
+  ['racing', 'Racing'], ['independiente', 'Independiente'], ['sanlorenzo', 'San Lorenzo'],
+];
+let activeFilter = 'todos';
+
+function renderFilters() {
+  const bar = $('#fx-filters');
+  if (!bar) return;
+  bar.innerHTML = FILTERS.map(([id, label]) => `<button type="button" class="fxf${id === activeFilter ? ' is-on' : ''}" data-filter="${id}" aria-pressed="${id === activeFilter}">${esc(label)}</button>`).join('');
+}
+
+function applyFilter() {
+  document.querySelectorAll('#cards .fxs__item').forEach((li) => {
+    li.hidden = activeFilter !== 'todos' && !li.dataset.tags.split(' ').includes(activeFilter);
+  });
+}
+
 function renderCards() {
-  $('#cards').innerHTML = MATCHES.map(cardHTML).join('');
+  // finished matches leave the board once their day is over
+  const upcoming = MATCHES.filter((m) => !isFinished(m));
+  $('#cards').innerHTML = upcoming.map(cardHTML).join('') + seleccionCardHTML();
+  $('#cards').querySelectorAll('a[data-wa]').forEach((a) => { a.href = waLink(a.dataset.waText); tuneWaLink(a); });
+  renderFilters();
+  applyFilter();
+  renderIntroFixtures(upcoming);
+}
+
+function renderIntroFixtures(upcoming) {
+  const ul = $('#intro-fixtures');
+  if (!ul) return;
+  ul.innerHTML = upcoming.slice(0, 3).map((m) => {
+    const dp = dateParts(m);
+    return `<li><a href="#${m.id}" data-match="${m.id}">${flagImg(m.homeFlag, 'ifx__badge')}${flagImg(m.flag, 'ifx__badge')}<span>${String(dp.day).padStart(2, '0')}.${String(new Date(m.kickoff).getMonth() + 1).padStart(2, '0')}</span> ${esc(m.home)} vs ${esc(m.rival)}</a></li>`;
+  }).join('');
 }
 
 // Keeps keyboard focus: only rebuild the cards when a status actually changed.
 function refreshCards() {
-  const cards = [...document.querySelectorAll('#cards .fx')];
+  const cards = [...document.querySelectorAll('#cards .fx[data-match]')];
   const changed = cards.some((c) => !c.classList.contains(`is-${matchStatus(matchById(c.dataset.match), now())}`));
   if (changed || !cards.length) { renderCards(); return; }
   cards.forEach((c) => { c.querySelector('.chip').textContent = statusText(matchById(c.dataset.match), now()); });
@@ -247,7 +288,7 @@ function matchHeroHTML(m) {
     ? (m.result ? `Terminó ${m.result.home} a ${m.result.rival}. Gracias a los que fueron con nosotros.` : 'Gracias a los que fueron con nosotros. Pronto cargamos el resultado.')
     : m.subline;
   return `<section class="mhero" data-look="${m.id}" style="${themeStyle(m)}">
-    ${bgHTML(m.id)}
+    ${bgHTML(m.media || m.id)}
     <div class="wrap mhero__in">
       <button class="mhero__back" type="button" data-go="home">← Todos los partidos</button>
       <div class="mhero__flags">${flagImg(m.homeFlag, 'flag flag--xl')}<span class="mhero__x">vs</span>${flagImg(m.flag, 'flag flag--xl')}</div>
@@ -510,6 +551,8 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 document.addEventListener('click', (e) => {
+  const f = e.target.closest('[data-filter]');
+  if (f) { activeFilter = f.dataset.filter; renderFilters(); applyFilter(); return; }
   const card = e.target.closest('[data-match]');
   if (card) { e.preventDefault(); go({ view: 'match', matchId: card.dataset.match }); return; }
   const toFixtures = e.target.closest('[data-go="partidos"]');
@@ -577,7 +620,7 @@ function init() {
   });
   paintCartCount();
   $('#cart-btn').addEventListener('click', openCart);
-  const hello = waLink('¡Hola! Quiero consultar por entradas para Boca vs River.');
+  const hello = waLink('¡Hola! Quiero consultar por entradas.');
   document.querySelectorAll('[data-wa]').forEach((a) => {
     a.href = a.dataset.waText ? waLink(a.dataset.waText) : hello;
     tuneWaLink(a);

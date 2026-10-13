@@ -25,23 +25,24 @@
 <style>html{background:#070a12;color-scheme:dark}</style>
 <link rel="preload" as="image" href="media/hero-m.jpg" media="(max-aspect-ratio: 4/5)" fetchpriority="high">
 <link rel="preload" as="image" href="media/hero.jpg" media="(min-aspect-ratio: 4.01/5)">
-<link rel="modulepreload" href="js/app.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/data.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/ui.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/geometry.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/map.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/cart.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/checkout.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/logo.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/icons.js?v=cbfcb22a0e">
-<link rel="modulepreload" href="js/clients.js?v=cbfcb22a0e">
+<link rel="modulepreload" href="js/app.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/data.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/ui.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/geometry.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/map.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/cart.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/checkout.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/logo.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/icons.js?v=3e37292e9f">
+<link rel="modulepreload" href="js/clients.js?v=3e37292e9f">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Saira+Condensed:wght@700;800&display=swap">
-<link rel="stylesheet" href="css/base.css?v=cbfcb22a0e">
-<link rel="stylesheet" href="css/home.css?v=cbfcb22a0e">
-<link rel="stylesheet" href="css/match.css?v=cbfcb22a0e">
-<link rel="stylesheet" href="css/checkout.css?v=cbfcb22a0e">
+<link rel="stylesheet" href="css/base.css?v=3e37292e9f">
+<link rel="stylesheet" href="css/home.css?v=3e37292e9f">
+<link rel="stylesheet" href="css/match.css?v=3e37292e9f">
+<link rel="stylesheet" href="css/checkout.css?v=3e37292e9f">
+<link rel="stylesheet" href="css/soft.css?v=3e37292e9f">
 
 
 </head>
@@ -64,13 +65,12 @@
   <div id="view-home">
     <section class="intro" id="intro" aria-label="Presentación">
       <div id="intro-bg"></div>
+      <div class="intro__aura" aria-hidden="true"><i class="a1"></i><i class="a2"></i><i class="a3"></i><i class="a4"></i></div>
       <div class="intro__center" id="intro-center">
         <h1 class="intro__logo" id="intro-logo"></h1>
-        <p class="intro__tag">Entradas para el Superclásico</p>
+        <p class="intro__tag">Entradas para el fútbol argentino</p>
         <p class="intro__xp">Y si venís de lejos: hotel, viaje y restaurante, también con nosotros.</p>
-        <ul class="intro__fixture" aria-label="Próximo partido">
-          <li><a href="#sc" data-match="sc"><span>01.11</span> Boca vs River · La Bombonera</a></li>
-        </ul>
+        <ul class="intro__fixture" id="intro-fixtures" aria-label="Próximos partidos"></ul>
       </div>
       <a class="intro__cue" href="#partidos" data-scroll="partidos"><span>Ver partidos</span><i aria-hidden="true"></i></a>
     </section>
@@ -93,9 +93,11 @@
     <section class="wrap fixtures" id="partidos" aria-labelledby="fx-title">
       <div class="sec-head">
         <h2 class="sec-title" id="fx-title">¿A qué partido vamos?</h2>
-        <p class="sec-lead">Elegí el partido. Después te mostramos el estadio con cada ubicación.</p>
+        <p class="sec-lead">Liga Profesional, clásicos y Selección. Elegí el partido y después tu lugar en el estadio.</p>
       </div>
+      <div class="fxf-bar" id="fx-filters" role="group" aria-label="Filtrar partidos"></div>
       <ol class="fixtures__list" id="cards"></ol>
+      <p class="fx-more">¿No ves tu partido? <a data-wa data-wa-text="¡Hola! Busco entradas para un partido que no está en la web." href="https://wa.me/" target="_blank" rel="noopener">Pedilo por WhatsApp</a> y te lo conseguimos.</p>
     </section>
 
     <section class="trust" aria-labelledby="trust-title">
@@ -163,7 +165,7 @@
 
 <footer class="wrap foot">
   <span class="foot__logo" id="foot-logo"></span>
-  <p class="foot__note">Boca vs River: domingo 1/11/2026, 15:00, La Bombonera (Torneo Clausura, fecha 15). Plano ilustrativo. Videos de Pexels: Monirul Islam, Necip Duman y Bien Agusto.</p>
+  <p class="foot__note">Partidos y horarios según la programación de la Liga Profesional (07/10/2026). Planos ilustrativos. No hay público visitante. Videos de Pexels: Monirul Islam, Necip Duman y Bien Agusto.</p>
   <button class="btn btn--ghost btn--sm" id="sim" type="button" aria-pressed="false">Simular 1/11 (ya se jugó)</button>
 </footer>
 
@@ -180,7 +182,7 @@
 
 <div class="tip" id="tip" role="tooltip" hidden></div>
 <div class="sheet" id="sheet" hidden></div>
-<script type="module" src="js/app.js?v=cbfcb22a0e"></script>
+<script type="module" src="js/app.js?v=3e37292e9f"></script>
 
 </body>
 </html>

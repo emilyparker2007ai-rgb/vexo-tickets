@@ -1,5 +1,5 @@
 // Shared UI helpers: money, names, price colors, tooltip, bottom sheet, match status.
-import { MARKET_LABEL, MARKET_DATE, VENUES } from './data.js?v=cbfcb22a0e';
+import { MARKET_LABEL, MARKET_DATE, VENUES, CLUBS } from './data.js?v=3e37292e9f';
 
 const ARS = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
 const TZ = 'America/Argentina/Buenos_Aires';
@@ -253,7 +253,26 @@ export function whenText(match, { long = false } = {}) {
   return `${wd.charAt(0).toUpperCase()}${wd.slice(1)} ${dm} · ${hourOf(match)}`;
 }
 
+// Round club badge drawn from the club colors and its shirt pattern (no crests).
+function badgePattern({ pattern, colors: [a, b] }) {
+  const stripes = (c1, c2, n) => Array.from({ length: n }, (_, i) => `<rect x="${(48 / n) * i}" y="0" width="${48 / n + 0.2}" height="48" fill="${i % 2 ? c2 : c1}"/>`).join('');
+  switch (pattern) {
+    case 'vstripes': return stripes(a, b, 5);
+    case 'hband': return `<rect width="48" height="48" fill="${a}"/><rect y="17" width="48" height="14" fill="${b}"/>`;
+    case 'sash': return `<rect width="48" height="48" fill="${a}"/><path d="M-4 40 L36 -4 H52 L12 52 H-4z" fill="${b}"/>`;
+    case 'halves': return `<rect width="24" height="48" fill="${a}"/><rect x="24" width="24" height="48" fill="${b}"/>`;
+    case 'chevron': return `<rect width="48" height="48" fill="${a}"/><path d="M6 6 L24 30 L42 6 H50 V14 L24 46 L-2 14 V6z" fill="${b}"/>`;
+    default: return `<rect width="48" height="48" fill="${a}"/><circle cx="24" cy="24" r="13" fill="none" stroke="${b}" stroke-width="2.5" opacity=".9"/>`;
+  }
+}
+
+let badgeSeq = 0;
 export function flagImg(code, cls = 'flag') {
-  const names = { arg: 'Bandera de Argentina', bol: 'Bandera de Bolivia', bfa: 'Bandera de Burkina Faso', ben: 'Bandera de Benín', boca: 'Colores de Boca', river: 'Colores de River' };
-  return `<img class="${cls}" src="img/flags/${code}.svg" alt="${names[code]}" width="60" height="40">`;
+  const club = CLUBS[code];
+  if (!club) return '';
+  const id = `bdg${badgeSeq += 1}`;
+  return `<span class="${cls} badge" role="img" aria-label="${esc(club.name)}"><svg viewBox="0 0 48 48" aria-hidden="true">
+    <defs><clipPath id="${id}"><circle cx="24" cy="24" r="22"/></clipPath></defs>
+    <g clip-path="url(#${id})">${badgePattern(club)}<path d="M0 0h48v24H0z" fill="#fff" opacity=".10"/></g>
+    <circle cx="24" cy="24" r="22.6" fill="none" stroke="rgba(255,255,255,.9)" stroke-width="1.6"/></svg></span>`;
 }
