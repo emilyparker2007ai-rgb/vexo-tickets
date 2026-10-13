@@ -1,9 +1,9 @@
 // Ticket page: every detail of the chosen place, then add to cart or reserve right away on WhatsApp.
-import { MAX_TICKETS } from './data.js?v=46d69f8404';
-import { money, esc, whenText, venueOf, flagImg, tuneWaLink, deposit, balance, mul, hasPrice, matchTitle } from './ui.js?v=46d69f8404';
-import { WA_ICON } from './icons.js?v=46d69f8404';
-import { mountMap } from './map.js?v=46d69f8404';
-import { addToCart, openCart, waLink, copyText, inAppHint } from './cart.js?v=46d69f8404';
+import { MAX_TICKETS } from './data.js?v=cbfcb22a0e';
+import { money, esc, whenText, venueOf, flagImg, tuneWaLink, mul, hasPrice, matchTitle } from './ui.js?v=cbfcb22a0e';
+import { WA_ICON } from './icons.js?v=cbfcb22a0e';
+import { mountMap } from './map.js?v=cbfcb22a0e';
+import { addToCart, openCart, waLink, copyText, inAppHint } from './cart.js?v=cbfcb22a0e';
 
 function reservationCode(match, block) {
   const n = Math.floor(1000 + Math.random() * 9000);
@@ -25,8 +25,8 @@ function message(sel, qty, code) {
     placeLine(block),
     ...(hasPrice(block.cat.price)
       ? [`Precio final: ${money(block.cat.price)} cada una · Total ${money(mul(block.cat.price, qty))}`,
-        `Para reservar (50%): ${money(deposit(mul(block.cat.price, qty)))} · Al retirarlas en mano: ${money(balance(mul(block.cat.price, qty)))}`]
-      : ['¿Me pasan el precio? Sé que se reserva con el 50% y el resto se paga al retirarlas.']),
+        'Lo pago en el momento en que me entregan las entradas.']
+      : ['¿Me pasan el precio? Lo pago en el momento en que me entregan las entradas.']),
     '',
     `Mi código de reserva es ${code}. ¿Me confirman si está disponible?`,
   ].join('\n');
@@ -68,18 +68,15 @@ export function render(root, sel, { onBack, onQty }) {
             <div class="stepper stepper--sm"><button type="button" data-d="-1" aria-label="Una entrada menos">−</button><output id="co-qty">${qty}</output><button type="button" data-d="1" aria-label="Una entrada más">+</button></div>
           </div>
           <div class="co__total"><span>Total final</span><b id="co-total"></b></div>
-          ${hasPrice(block.cat.price) ? '' : '<p class="co__note">Te pasamos el precio por WhatsApp. Reservás con el 50% y el resto lo pagás al retirar.</p>'}
-          <dl class="co__split"${hasPrice(block.cat.price) ? '' : ' hidden'}>
-            <div><dt>Para reservar (50%)</dt><dd id="co-dep"></dd></div>
-            <div><dt>Al retirarlas en mano (50%)</dt><dd id="co-bal"></dd></div>
-          </dl>
+          ${hasPrice(block.cat.price) ? '' : '<p class="co__note">Te pasamos el precio por WhatsApp y lo pagás cuando te entregamos la entrada.</p>'}
+          <p class="co__note co__pay">Se paga en el momento de la entrega, con la entrada en la mano.</p>
           <button class="btn btn--sol btn--xl" type="button" data-act="add" id="co-add">Agregar al carrito</button>
           <a class="btn btn--wa btn--xl" id="co-wa" href="#" target="_blank" rel="noopener">${WA_ICON}<span>Reservar por WhatsApp</span></a>
           ${inAppHint()}
           <ol class="co__steps">
             <li><span><b>Nos escribís por WhatsApp</b> con tu pedido. Te responde una persona, no un robot.</span></li>
-            <li><span><b>Te confirmamos el lugar exacto</b> y lo reservás pagando el 50%.</span></li>
-            <li><span><b>Te damos la entrada original en mano</b> y pagás el otro 50%.</span></li>
+            <li><span><b>Te confirmamos el lugar exacto</b> y coordinamos la entrega.</span></li>
+            <li><span><b>Te damos la entrada original en persona</b> y la pagás en ese momento.</span></li>
           </ol>
           <details class="co__msg">
             <summary>Ver el mensaje que nos llega</summary>
@@ -120,8 +117,6 @@ export function render(root, sel, { onBack, onQty }) {
     root.querySelector('#co-text').textContent = text;
     root.querySelector('#co-wa').href = waLink(text);
     root.querySelector('#co-total').textContent = money(mul(block.cat.price, qty));
-    root.querySelector('#co-dep').textContent = money(deposit(mul(block.cat.price, qty)));
-    root.querySelector('#co-bal').textContent = money(balance(mul(block.cat.price, qty)));
     root.querySelector('#co-qty').textContent = qty;
     root.querySelector('#tk-qty').textContent = qty;
     root.querySelector('#tk-qty-l').textContent = qty > 1 ? 'entradas' : 'entrada';

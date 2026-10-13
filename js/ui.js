@@ -1,5 +1,5 @@
 // Shared UI helpers: money, names, price colors, tooltip, bottom sheet, match status.
-import { MARKET_LABEL, MARKET_DATE, VENUES } from './data.js?v=46d69f8404';
+import { MARKET_LABEL, MARKET_DATE, VENUES } from './data.js?v=cbfcb22a0e';
 
 const ARS = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
 const TZ = 'America/Argentina/Buenos_Aires';
@@ -8,9 +8,6 @@ const TZ = 'America/Argentina/Buenos_Aires';
 export const hasPrice = (n) => typeof n === 'number' && Number.isFinite(n);
 export const money = (n) => (hasPrice(n) ? `$${ARS.format(n)}` : 'A confirmar');
 export const mul = (price, qty) => (hasPrice(price) ? price * qty : null);
-// Payment: half to reserve, the other half when the ticket is handed over.
-export const deposit = (total) => (hasPrice(total) ? Math.round(total / 2) : null);
-export const balance = (total) => (hasPrice(total) ? total - deposit(total) : null);
 export const kMoney = (n) => {
   if (!hasPrice(n)) return 'Consultar';
   return n >= 1e6 ? `$${(n / 1e6).toLocaleString('es-AR', { maximumFractionDigits: 2 })}M` : `$${Math.round(n / 1000)}K`;

@@ -1,17 +1,17 @@
 // Vexo Tickets: pick the match, pick your place, reserve on WhatsApp.
-import { MATCHES, INSTAGRAM_URL, MAX_TICKETS } from './data.js?v=46d69f8404';
-import { buildBlocks } from './geometry.js?v=46d69f8404';
+import { MATCHES, INSTAGRAM_URL, MAX_TICKETS } from './data.js?v=cbfcb22a0e';
+import { buildBlocks } from './geometry.js?v=cbfcb22a0e';
 import {
   detailHTML, showTip, hideTip, openSheet, closeSheet, isSheetOpen, matchStatus, statusText, whenText, venueOf,
-  esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink, deposit,
+  esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink,
   hasPrice, mul, matchTitle, pricedMatch,
-} from './ui.js?v=46d69f8404';
-import { WA_ICON } from './icons.js?v=46d69f8404';
-import { render as renderCheckout } from './checkout.js?v=46d69f8404';
-import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=46d69f8404';
-import { wordmark } from './logo.js?v=46d69f8404';
-import { mountMap } from './map.js?v=46d69f8404';
-import { CLIENTS, SOLD, CASES } from './clients.js?v=46d69f8404';
+} from './ui.js?v=cbfcb22a0e';
+import { WA_ICON } from './icons.js?v=cbfcb22a0e';
+import { render as renderCheckout } from './checkout.js?v=cbfcb22a0e';
+import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=cbfcb22a0e';
+import { wordmark } from './logo.js?v=cbfcb22a0e';
+import { mountMap } from './map.js?v=cbfcb22a0e';
+import { CLIENTS, SOLD, CASES } from './clients.js?v=cbfcb22a0e';
 
 const HOME_ANCHORS = ['clientes', 'partidos', 'experiencias'];
 const SIM_NOW = new Date('2026-11-01T18:00:00-03:00').getTime();
@@ -285,8 +285,8 @@ function renderMatch(m) {
         <ul class="cats" id="cats">${m.cats.map(catRowHTML).join('')}</ul>
       </div>
       <ul class="promise">
-        <li><b>Reservás con el 50%</b> cuando te confirmamos el lugar.</li>
-        <li><b>El otro 50%, en mano</b>, cuando te damos la entrada original.</li>
+        <li><b>Pagás en el momento</b> en que te entregamos la entrada.</li>
+        <li><b>Entrada original</b>, entregada en persona.</li>
         <li><b>Te atiende una persona</b> por WhatsApp, de principio a fin.</li>
       </ul>
       <a class="xp-strip" href="#experiencias" data-scroll="experiencias"><b>¿Venís de otra ciudad?</b> Te armamos hotel, viaje, traslados y restaurante. <span>Ver experiencias →</span></a>
@@ -344,7 +344,7 @@ function openBuySheet(m, block) {
   }
   let qty = 2;
   const totalHTML = () => (hasPrice(block.cat.price)
-    ? `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'} · total final</span><b>${money(mul(block.cat.price, qty))}</b><span>Reservás con ${money(deposit(mul(block.cat.price, qty)))} (50%)</span>`
+    ? `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'} · total final</span><b>${money(mul(block.cat.price, qty))}</b><span>Pagás al recibir la entrada</span>`
     : `<span>${qty} ${qty > 1 ? 'entradas' : 'entrada'}</span><b>A confirmar</b><span>Te pasamos el precio por WhatsApp</span>`);
   const body = block.isCategory
     ? `<p class="tip__label">${esc(block.name)}</p><p class="tip__pos">${esc(block.position)}</p>

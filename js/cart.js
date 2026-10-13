@@ -1,8 +1,8 @@
 // Shopping cart: items live in this browser (localStorage); checkout is one WhatsApp message.
 // On phones it is a bottom sheet that owns a history entry, so Back closes it.
-import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js?v=46d69f8404';
-import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance, mul, hasPrice, matchTitle } from './ui.js?v=46d69f8404';
-import { WA_ICON } from './icons.js?v=46d69f8404';
+import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js?v=cbfcb22a0e';
+import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, mul, hasPrice, matchTitle } from './ui.js?v=cbfcb22a0e';
+import { WA_ICON } from './icons.js?v=cbfcb22a0e';
 
 const KEY = 'vexo-cart-v1';
 let items = load();
@@ -85,8 +85,8 @@ function cartMessage(code) {
     return `${n + 1}) ${matchTitle(m)}, ${whenText(m)} en ${venueOf(m).short}: ${where}. ${price}`;
   });
   const pay = hasPrice(total())
-    ? [`Total: ${money(total())}`, `Para reservar (50%): ${money(deposit(total()))} · Al retirarlas en mano: ${money(balance(total()))}`]
-    : ['¿Me pasan el precio? Sé que se reserva con el 50% y el resto se paga al retirarlas.'];
+    ? [`Total: ${money(total())}`, 'Lo pago en el momento en que me entregan las entradas.']
+    : ['¿Me pasan el precio? Lo pago en el momento en que me entregan las entradas.'];
   return ['¡Hola! Quiero reservar estas entradas:', '', ...lines, '', ...pay,
     `Pedido ${code}. ¿Me confirman disponibilidad?`].join('\n');
 }
@@ -126,11 +126,7 @@ function render() {
   body.innerHTML = `${undoHTML()}<ul class="cart__list">${items.map(itemHTML).join('')}</ul>
     <div class="cart__foot">
       <div class="cart__total"><span>Total final</span><b>${money(total())}</b></div>
-      <dl class="cart__split"${hasPrice(total()) ? '' : ' hidden'}>
-        <div><dt>Para reservar (50%)</dt><dd>${money(deposit(total()))}</dd></div>
-        <div><dt>Al retirarlas en mano (50%)</dt><dd>${money(balance(total()))}</dd></div>
-      </dl>
-      <p class="cart__note">${hasPrice(total()) ? 'Te confirmamos cada ubicación por WhatsApp y recién ahí pagás la reserva.' : 'Te confirmamos ubicación y precio por WhatsApp. Reservás con el 50% y el resto lo pagás al retirar.'}</p>
+      <p class="cart__note">${hasPrice(total()) ? 'Te confirmamos cada ubicación por WhatsApp y pagás en el momento en que te entregamos las entradas.' : 'Te confirmamos ubicación y precio por WhatsApp, y pagás en el momento en que te entregamos las entradas.'}</p>
       <a class="btn btn--sol btn--xl" data-wa-cta href="${waLink(text)}" target="_blank" rel="noopener">${WA_ICON}<span>Finalizar por WhatsApp</span></a>
       ${inAppHint()}
       <p class="cart__xp">¿Necesitás hotel, viaje o traslado? Avisanos en el mismo mensaje y te lo armamos.</p>
