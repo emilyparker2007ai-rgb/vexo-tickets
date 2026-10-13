@@ -25,23 +25,23 @@
 <style>html{background:#070a12;color-scheme:dark}</style>
 <link rel="preload" as="image" href="media/hero-m.jpg" media="(max-aspect-ratio: 4/5)" fetchpriority="high">
 <link rel="preload" as="image" href="media/hero.jpg" media="(min-aspect-ratio: 4.01/5)">
-<link rel="modulepreload" href="js/app.js?v=a6849d3409">
-<link rel="modulepreload" href="js/data.js?v=a6849d3409">
-<link rel="modulepreload" href="js/ui.js?v=a6849d3409">
-<link rel="modulepreload" href="js/geometry.js?v=a6849d3409">
-<link rel="modulepreload" href="js/map.js?v=a6849d3409">
-<link rel="modulepreload" href="js/cart.js?v=a6849d3409">
-<link rel="modulepreload" href="js/checkout.js?v=a6849d3409">
-<link rel="modulepreload" href="js/logo.js?v=a6849d3409">
-<link rel="modulepreload" href="js/icons.js?v=a6849d3409">
-<link rel="modulepreload" href="js/clients.js?v=a6849d3409">
+<link rel="modulepreload" href="js/app.js?v=46d69f8404">
+<link rel="modulepreload" href="js/data.js?v=46d69f8404">
+<link rel="modulepreload" href="js/ui.js?v=46d69f8404">
+<link rel="modulepreload" href="js/geometry.js?v=46d69f8404">
+<link rel="modulepreload" href="js/map.js?v=46d69f8404">
+<link rel="modulepreload" href="js/cart.js?v=46d69f8404">
+<link rel="modulepreload" href="js/checkout.js?v=46d69f8404">
+<link rel="modulepreload" href="js/logo.js?v=46d69f8404">
+<link rel="modulepreload" href="js/icons.js?v=46d69f8404">
+<link rel="modulepreload" href="js/clients.js?v=46d69f8404">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&family=Saira+Condensed:wght@700;800&display=swap">
-<link rel="stylesheet" href="css/base.css?v=a6849d3409">
-<link rel="stylesheet" href="css/home.css?v=a6849d3409">
-<link rel="stylesheet" href="css/match.css?v=a6849d3409">
-<link rel="stylesheet" href="css/checkout.css?v=a6849d3409">
+<link rel="stylesheet" href="css/base.css?v=46d69f8404">
+<link rel="stylesheet" href="css/home.css?v=46d69f8404">
+<link rel="stylesheet" href="css/match.css?v=46d69f8404">
+<link rel="stylesheet" href="css/checkout.css?v=46d69f8404">
 
 
 </head>
@@ -67,6 +67,7 @@
       <div class="intro__center" id="intro-center">
         <h1 class="intro__logo" id="intro-logo"></h1>
         <p class="intro__tag">Entradas para el Superclásico</p>
+        <p class="intro__xp">Y si venís de lejos: hotel, viaje y restaurante, también con nosotros.</p>
         <ul class="intro__fixture" aria-label="Próximo partido">
           <li><a href="#sc" data-match="sc"><span>01.11</span> Boca vs River · La Bombonera</a></li>
         </ul>
@@ -119,6 +120,24 @@
       </div>
     </section>
 
+
+    <section class="xp" id="experiencias" aria-labelledby="xp-title">
+      <div class="wrap xp__in">
+        <div class="xp__head">
+          <p class="xp__kick">Experiencias Vexo</p>
+          <h2 class="sec-title" id="xp-title">Más que una entrada</h2>
+          <p class="sec-lead">Si venís de otra ciudad o querés vivir el partido completo, te armamos todo: desde que salís de tu casa hasta que volvés.</p>
+        </div>
+        <ul class="xp__grid">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 18V7M3 13h18v5M21 18v-3a3 3 0 0 0-3-3h-7v6M7 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg><b>Hoteles</b><span>Te reservamos cerca de la cancha o donde prefieras.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 13.5L3 11l1.5-1.5 8 1 4-4.5c1-1 2.5-1.2 3-.5s.5 2-.5 3l-4.5 4 1 8L15 22l-2.5-7.5-3.5 3V20l-1.5 1-1-3.5L3 16.5 4 15h3z"/></svg><b>Aéreos</b><span>Vuelos para llegar a tiempo, vengas de donde vengas.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17V6a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v11M5 11h14M5 17h14M7.5 20v-3M16.5 20v-3M8 14h.01M16 14h.01"/></svg><b>Micros y traslados</b><span>Del hotel o la terminal a la cancha, y de vuelta.</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M16 3c-1.7 1.5-2.5 3.5-2.5 6v3H17V3zM17 12v9"/></svg><b>Restaurantes de categoría</b><span>La previa o el festejo, con mesa reservada.</span></li>
+        </ul>
+        <a class="btn btn--sol btn--lg" data-wa data-wa-text="¡Hola! Quiero armar una experiencia completa: entradas y además hotel, viaje o restaurante." href="https://wa.me/" target="_blank" rel="noopener"><span>Armá tu experiencia</span></a>
+      </div>
+    </section>
+
     <section class="clients-sec" id="clientes" aria-labelledby="clients-title">
       <div class="wrap">
         <div class="sec-head">
@@ -161,7 +180,7 @@
 
 <div class="tip" id="tip" role="tooltip" hidden></div>
 <div class="sheet" id="sheet" hidden></div>
-<script type="module" src="js/app.js?v=a6849d3409"></script>
+<script type="module" src="js/app.js?v=46d69f8404"></script>
 
 </body>
 </html>

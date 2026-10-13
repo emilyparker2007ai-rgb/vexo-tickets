@@ -1,18 +1,19 @@
 // Vexo Tickets: pick the match, pick your place, reserve on WhatsApp.
-import { MATCHES, INSTAGRAM_URL, MAX_TICKETS } from './data.js?v=a6849d3409';
-import { buildBlocks } from './geometry.js?v=a6849d3409';
+import { MATCHES, INSTAGRAM_URL, MAX_TICKETS } from './data.js?v=46d69f8404';
+import { buildBlocks } from './geometry.js?v=46d69f8404';
 import {
   detailHTML, showTip, hideTip, openSheet, closeSheet, isSheetOpen, matchStatus, statusText, whenText, venueOf,
   esc, money, kMoney, compareHTML, reducedMotion, flagImg, priceColor, coarsePointer, tuneWaLink, deposit,
   hasPrice, mul, matchTitle, pricedMatch,
-} from './ui.js?v=a6849d3409';
-import { WA_ICON } from './icons.js?v=a6849d3409';
-import { render as renderCheckout } from './checkout.js?v=a6849d3409';
-import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=a6849d3409';
-import { wordmark } from './logo.js?v=a6849d3409';
-import { mountMap } from './map.js?v=a6849d3409';
-import { CLIENTS, SOLD, CASES } from './clients.js?v=a6849d3409';
+} from './ui.js?v=46d69f8404';
+import { WA_ICON } from './icons.js?v=46d69f8404';
+import { render as renderCheckout } from './checkout.js?v=46d69f8404';
+import { initCart, openCart, closeCart, isCartOpen, addToCart, onCartChange, cartCount, waLink } from './cart.js?v=46d69f8404';
+import { wordmark } from './logo.js?v=46d69f8404';
+import { mountMap } from './map.js?v=46d69f8404';
+import { CLIENTS, SOLD, CASES } from './clients.js?v=46d69f8404';
 
+const HOME_ANCHORS = ['clientes', 'partidos', 'experiencias'];
 const SIM_NOW = new Date('2026-11-01T18:00:00-03:00').getTime();
 const $ = (s) => document.querySelector(s);
 const views = { home: $('#view-home'), match: $('#view-match'), reserva: $('#view-reserva') };
@@ -288,6 +289,7 @@ function renderMatch(m) {
         <li><b>El otro 50%, en mano</b>, cuando te damos la entrada original.</li>
         <li><b>Te atiende una persona</b> por WhatsApp, de principio a fin.</li>
       </ul>
+      <a class="xp-strip" href="#experiencias" data-scroll="experiencias"><b>¿Venís de otra ciudad?</b> Te armamos hotel, viaje, traslados y restaurante. <span>Ver experiencias →</span></a>
     </section>`}`;
   wireVideos(views.match);
 }
@@ -383,7 +385,7 @@ let cleanupReserva = null;
 function hashFor(e) {
   if (e.view === 'match') return `#${e.matchId}`;
   if (e.view === 'reserva') return '#reserva';
-  return e.anchor === 'clientes' || e.anchor === 'partidos' ? `#${e.anchor}` : '#inicio';
+  return HOME_ANCHORS.includes(e.anchor) ? `#${e.anchor}` : '#inicio';
 }
 
 function setHistory(entry, replace) {
@@ -473,7 +475,7 @@ function entryFromLocation() {
   if (s && s.view) return s;
   const h = location.hash.slice(1);
   if (matchById(h)) return { view: 'match', matchId: h };
-  if (h === 'clientes' || h === 'partidos') return { view: 'home', anchor: h };
+  if (HOME_ANCHORS.includes(h)) return { view: 'home', anchor: h };
   return { view: 'home' };
 }
 
@@ -532,7 +534,7 @@ document.addEventListener('click', (e) => {
   if (!scroll) return;
   e.preventDefault();
   const id = scroll.dataset.scroll;
-  if ((id === 'clientes' || id === 'partidos') && state.current.view !== 'home') { go({ view: 'home', anchor: id }); return; }
+  if (HOME_ANCHORS.includes(id) && state.current.view !== 'home') { go({ view: 'home', anchor: id }); return; }
   document.getElementById(id)?.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' });
 });
 
@@ -577,7 +579,7 @@ function init() {
   $('#cart-btn').addEventListener('click', openCart);
   const hello = waLink('¡Hola! Quiero consultar por entradas para Boca vs River.');
   document.querySelectorAll('[data-wa]').forEach((a) => {
-    a.href = hello;
+    a.href = a.dataset.waText ? waLink(a.dataset.waText) : hello;
     tuneWaLink(a);
     if (!a.querySelector('svg')) a.insertAdjacentHTML('afterbegin', WA_ICON);
   });

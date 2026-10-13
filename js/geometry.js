@@ -1,5 +1,5 @@
 // Stadium geometry. World units are meters-ish, origin at the center spot, y grows downward.
-import { VENUES } from './data.js?v=a6849d3409';
+import { VENUES } from './data.js?v=46d69f8404';
 
 const EXP = 2 / 5; // superellipse exponent: squarish bowl with rounded corners
 const DEG = Math.PI / 180;

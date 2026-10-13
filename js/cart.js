@@ -1,8 +1,8 @@
 // Shopping cart: items live in this browser (localStorage); checkout is one WhatsApp message.
 // On phones it is a bottom sheet that owns a history entry, so Back closes it.
-import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js?v=a6849d3409';
-import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance, mul, hasPrice, matchTitle } from './ui.js?v=a6849d3409';
-import { WA_ICON } from './icons.js?v=a6849d3409';
+import { MATCHES, MAX_TICKETS, WHATSAPP_NUMBER } from './data.js?v=46d69f8404';
+import { money, esc, whenText, venueOf, flagImg, pushOverlay, swipeToClose, tuneWaLink, inAppBrowser, deposit, balance, mul, hasPrice, matchTitle } from './ui.js?v=46d69f8404';
+import { WA_ICON } from './icons.js?v=46d69f8404';
 
 const KEY = 'vexo-cart-v1';
 let items = load();
@@ -133,6 +133,7 @@ function render() {
       <p class="cart__note">${hasPrice(total()) ? 'Te confirmamos cada ubicación por WhatsApp y recién ahí pagás la reserva.' : 'Te confirmamos ubicación y precio por WhatsApp. Reservás con el 50% y el resto lo pagás al retirar.'}</p>
       <a class="btn btn--sol btn--xl" data-wa-cta href="${waLink(text)}" target="_blank" rel="noopener">${WA_ICON}<span>Finalizar por WhatsApp</span></a>
       ${inAppHint()}
+      <p class="cart__xp">¿Necesitás hotel, viaje o traslado? Avisanos en el mismo mensaje y te lo armamos.</p>
       <div class="cart__more">
         <button class="btn btn--ghost" type="button" data-cart-close>Seguir eligiendo</button>
         <button class="btn btn--ghost" type="button" data-copy>Copiar pedido</button>

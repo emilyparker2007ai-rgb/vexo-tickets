@@ -188,3 +188,18 @@
 @media (hover: hover) { .cases__btn:hover { border-color: var(--texto-2); } }
 .cases__more { display: inline-flex; align-items: center; min-height: 44px; color: var(--texto); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
 @media (pointer: coarse) { .cases__nav { display: none; } }
+
+/* ---- experiences beyond the match ---- */
+.intro__xp { margin: 0; max-width: 36ch; color: var(--texto-2); font-size: 15px; }
+.xp { padding-block: clamp(56px, 8vw, 112px); background: linear-gradient(180deg, var(--noche) 0%, #0d1526 50%, var(--noche) 100%); border-block: 1px solid var(--linea); }
+.xp__in { display: grid; gap: 32px; }
+.xp__head { display: grid; gap: 14px; max-width: 760px; }
+.xp__kick { margin: 0; color: var(--sol); font: 600 13px/1 var(--f-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.xp__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin: 0; padding: 0; list-style: none; background: var(--linea); border: 1px solid var(--linea); }
+.xp__grid li { display: grid; align-content: start; gap: 10px; padding: 28px 24px; background: var(--noche); }
+.xp__grid svg { width: 34px; height: 34px; fill: none; stroke: var(--celeste); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.xp__grid b { font: 700 20px/1.2 var(--f-body); }
+.xp__grid span { color: var(--texto-2); font-size: 15px; }
+.xp .btn--sol { justify-self: start; }
+@media (max-width: 980px) { .xp__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .xp__grid { grid-template-columns: minmax(0, 1fr); } .xp .btn--sol { justify-self: stretch; } }
